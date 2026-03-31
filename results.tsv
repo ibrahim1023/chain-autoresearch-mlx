@@ -11,3 +11,4 @@ d4816ca	1.845625	10.7	discard	lower weight decay to 0.1
 31bdf4b	1.721356	10.7	keep	shorten warmdown ratio to 0.25
 5c06118	1.748720	10.7	discard	increase matrix lr to 0.05
 ee0ff92	1.735405	10.7	discard	shorten warmdown ratio to 0.125
+e164289	1.742845	10.7	discard	increase long attention in upper layers
