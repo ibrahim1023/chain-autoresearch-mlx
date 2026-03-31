@@ -17,3 +17,4 @@ c069685	1.699151	10.7	keep	reduce depth to 3
 e752e0a	1.720352	10.7	keep	shorten warmdown ratio to 0.125 on depth 3
 b419d10	1.741288	10.7	discard	increase matrix lr to 0.05 on depth 3
 49bfe4a	1.687769	10.7	keep	lower matrix lr to 0.03 on depth 3
+80393ff	1.664232	10.7	keep	lower matrix lr to 0.02 on depth 3
