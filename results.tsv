@@ -14,3 +14,4 @@ ee0ff92	1.735405	10.7	discard	shorten warmdown ratio to 0.125
 e164289	1.742845	10.7	discard	increase long attention in upper layers
 90866af	1.721441	10.7	discard	lower scalar lr to 0.4
 c069685	1.699151	10.7	keep	reduce depth to 3
+e752e0a	1.720352	10.7	keep	shorten warmdown ratio to 0.125 on depth 3
