@@ -5,3 +5,4 @@ b7c9482	1512085	keep	batch totalScore storage updates
 61c852c	1507452	keep	cache members storage reference
 e3160d8	1502102	keep	replace registered mapping with index mapping
 085c6e6	1502102	discard	retry unchecked loop increments on index mapping
+fcac73b	1506694	discard	cache next member index before push
