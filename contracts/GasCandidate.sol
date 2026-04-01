@@ -11,11 +11,12 @@ contract GasCandidate {
 
     function registerBatch(address[] calldata accounts) external returns (uint256 added) {
         uint256 len = accounts.length;
+        address[] storage memberList = members;
         for (uint256 i = 0; i < len; ++i) {
             address account = accounts[i];
             if (!registered[account]) {
                 registered[account] = true;
-                members.push(account);
+                memberList.push(account);
                 added += 1;
             }
         }
@@ -43,10 +44,11 @@ contract GasCandidate {
     }
 
     function bumpAll(uint256 amount) external returns (uint256 updated) {
-        uint256 len = members.length;
+        address[] storage memberList = members;
+        uint256 len = memberList.length;
         uint256 runningTotal = totalScore;
         for (uint256 i = 0; i < len; ++i) {
-            address account = members[i];
+            address account = memberList[i];
             scores[account] += amount;
             runningTotal += amount;
             updated += 1;
