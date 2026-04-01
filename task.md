@@ -120,11 +120,23 @@ Current runner behavior:
 
 ## 6. Build The First V2 Baseline
 
-- [ ] Run the first V2 contract end to end.
-- [ ] Confirm compilation, tests, invariants, and metric extraction all work.
-- [ ] Record the first V2 baseline in a V2-specific results log.
-- [ ] Treat that result as the first score to beat for the chosen V2 contract.
-- [ ] Do not start V2 optimization until the baseline is real.
+- [x] Run the first V2 contract end to end.
+- [x] Confirm compilation, tests, invariants, and metric extraction all work.
+- [x] Record the first V2 baseline in a V2-specific results log.
+- [x] Treat that result as the first score to beat for the chosen V2 contract.
+- [x] Do not start V2 optimization until the baseline is real.
+
+Current first V2 baseline:
+
+- target: `TokenLedger`
+- commit: `5520615`
+- results log: `results.gas_pack.tsv`
+- baseline `median_gas`: `835526`
+- per-case benchmark gas:
+  - `testGasTokenLedgerMintBatch32`: `1155085`
+  - `testGasTokenLedgerTransferFanout8`: `515968`
+- invariants:
+  - none implemented yet, so correctness currently means compilation plus target-specific tests plus benchmark metric extraction
 
 ## 7. Run The First V2 Search Pass
 
