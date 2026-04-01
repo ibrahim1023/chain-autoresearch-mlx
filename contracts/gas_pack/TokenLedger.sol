@@ -1,0 +1,51 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract TokenLedger {
+    error LengthMismatch();
+    error ZeroAddress();
+    error InsufficientBalance();
+
+    mapping(address => uint256) public balanceOf;
+    uint256 public totalSupply;
+
+    function mintBatch(address[] calldata accounts, uint256[] calldata amounts) external returns (uint256 minted) {
+        uint256 length = accounts.length;
+        if (length != amounts.length) revert LengthMismatch();
+
+        for (uint256 i = 0; i < length; ++i) {
+            address account = accounts[i];
+            if (account == address(0)) revert ZeroAddress();
+
+            uint256 amount = amounts[i];
+            balanceOf[account] += amount;
+            minted += amount;
+        }
+
+        totalSupply += minted;
+    }
+
+    function transfer(address to, uint256 amount) external returns (bool) {
+        if (to == address(0)) revert ZeroAddress();
+
+        uint256 fromBalance = balanceOf[msg.sender];
+        if (fromBalance < amount) revert InsufficientBalance();
+
+        unchecked {
+            balanceOf[msg.sender] = fromBalance - amount;
+        }
+        balanceOf[to] += amount;
+        return true;
+    }
+
+    function burn(uint256 amount) external returns (bool) {
+        uint256 fromBalance = balanceOf[msg.sender];
+        if (fromBalance < amount) revert InsufficientBalance();
+
+        unchecked {
+            balanceOf[msg.sender] = fromBalance - amount;
+            totalSupply -= amount;
+        }
+        return true;
+    }
+}

@@ -1,115 +1,175 @@
-# autoresearch-mlx
+# chain-autoresearch
 
-This is an Apple Silicon (MLX) port of Karpathy's autoresearch — an experiment to have the LLM do its own research. All training runs natively on MLX with unified memory. No PyTorch or CUDA required.
+This file defines the operating procedure for the active blockchain research direction.
 
-**Monorepo note:** This project may live inside a larger repo. Always stage only `autoresearch-mlx/` paths. Never use blind `git add -A`.
+## Current State
 
-## Setup
+The repository currently has:
 
-To set up a new experiment, work with the user to:
+- a completed V1 local gas-optimization arena
+- an active V2 direction centered on a realistic `gas_pack` arena
 
-1. **Agree on a run tag**: propose a tag based on today's date (e.g. `mar5`). The branch `autoresearch/<tag>` must not already exist — this is a fresh run.
-2. **Create the branch**: `git checkout -b autoresearch/<tag>` from current master.
-3. **Read the in-scope files**: The repo is small. Read these files for full context:
-   - `README.md` — repository context.
-   - `prepare.py` — fixed constants, data prep, tokenizer, dataloader, evaluation. Do not modify.
-   - `train.py` — the file you modify. Model architecture, optimizer, training loop.
-4. **Verify data exists**: Check that `~/.cache/autoresearch/` contains data shards and a tokenizer. If not, tell the human to run `uv run prepare.py`.
-5. **Initialize results.tsv**: Create `results.tsv` with header row and baseline entry. Run `uv run train.py` once to establish YOUR baseline on this hardware. Do NOT use baseline numbers from other platforms.
-6. **Confirm and go**: Confirm setup looks good.
+V1 remains the only fully implemented arena today.
 
-Once you get confirmation, kick off the experimentation.
+V2 is the active build target.
 
-## Experimentation
+## V1 Reference Arena
 
-Each experiment runs on Apple Silicon via MLX. The training script runs for a **fixed time budget of 5 minutes** (wall clock training time, excluding startup/compilation). You launch it simply as: `uv run train.py`.
+The current implemented arena is:
 
-**What you CAN do:**
-- Modify `train.py` — this is the only file you edit. Everything is fair game: model architecture, optimizer, hyperparameters, training loop, batch size, model size, etc.
+- local smart contract gas optimization
 
-**What you CANNOT do:**
-- Modify `prepare.py`. It is read-only. It contains the fixed evaluation, data loading, tokenizer, and training constants (time budget, sequence length, etc).
-- Install new packages or add dependencies. You can only use what's already in `pyproject.toml`.
-- Modify the evaluation harness. The `evaluate_bpb` function in `prepare.py` is the ground truth metric.
+The V1 editable target is:
 
-**The goal is simple: get the lowest val_bpb.** Since the time budget is fixed, you don't need to worry about training time — it's always 5 minutes. Everything is fair game: change the architecture, the optimizer, the hyperparameters, the batch size, the model size. The only constraint is that the code runs without crashing and finishes within the time budget.
+- `contracts/GasCandidate.sol`
 
-**Memory** is a soft constraint. MLX uses unified memory shared between CPU and GPU. Some increase is acceptable for meaningful val_bpb gains, but it should not blow up dramatically.
+The V1 primary metric is:
 
-**Simplicity criterion**: All else being equal, simpler is better. A small improvement that adds ugly complexity is not worth it. Conversely, removing something and getting equal or better results is a great outcome — that's a simplification win. When evaluating whether to keep a change, weigh the complexity cost against the improvement magnitude. A 0.001 val_bpb improvement that adds 20 lines of hacky code? Probably not worth it. A 0.001 val_bpb improvement from deleting code? Definitely keep. An improvement of ~0 but much simpler code? Keep.
+- `median_gas`
 
-**The first run**: Your very first run should always be to establish the baseline, so you will run the training script as is.
+The V1 validation command is:
 
-## Output format
-
-Once the script finishes it prints a summary like this:
-
-```
----
-val_bpb:          2.534000
-training_seconds: 312.4
-total_seconds:    405.7
-peak_vram_mb:     27528.9
-mfu_percent:      0.00
-total_tokens_M:   39.8
-num_steps:        46
-num_params_M:     50.3
-depth:            8
+```bash
+python scripts/run_gas_experiment.py
 ```
 
-Note that the script runs for a fixed 5-minute training budget. On Apple Silicon the throughput, step count, and absolute val_bpb will differ from NVIDIA results — that's expected. Compare only against your own baseline on the same hardware.
+That command currently:
 
+- runs `forge test`
+- runs the gas benchmark snapshot
+- extracts per-case gas from `GasBenchmarkTest`
+- reports `status: ok` only when tests pass and `median_gas` is present
+
+Treat V1 as baseline history while V2 is being introduced.
+
+## V2 Direction
+
+The active next arena is:
+
+- `gas_pack`
+
+The intended V2 properties are:
+
+- a small pack of realistic contracts
+- one editable contract per search pass
+- fixed benchmark fixtures and call sets
+- stronger correctness checks
+- invariant checks where practical
+- one primary metric anchored to gas
+
+Recommended initial contracts:
+
+- `TokenLedger`
+- `RewardDistributor`
+- `MerkleClaimer`
+
+## Core Rule
+
+Keep the loop narrow:
+
+1. choose one arena and one target
+2. modify only that target during the pass
+3. run the fixed validation and benchmark path
+4. read one primary metric
+5. log `keep`, `discard`, or `crash`
+6. preserve deterministic comparison against the current kept baseline
+
+Do not widen the editable surface unless the human explicitly changes scope.
+
+## Fixed Surface
+
+During normal experiments, keep these fixed for the chosen arena:
+
+- benchmark fixtures
+- benchmark scenarios
+- correctness tests
+- invariant checks
+- metric extraction logic
+- toolchain configuration
+- runner scripts
+
+For the current V1 arena, that fixed surface includes:
+
+- `test/GasCandidate.t.sol`
+- `test/GasBenchmark.t.sol`
+- `scripts/run_gas_benchmark.py`
+- `scripts/run_gas_experiment.py`
+- `foundry.toml`
+
+## Validation Standard
+
+A run counts as valid only if:
+
+- compilation succeeds
+- correctness tests pass
+- invariant checks pass when defined
+- the benchmark completes
+- the primary metric is present
+
+Do not accept optimization claims that weaken correctness.
+
+## Results Logging
+
+V1 results are currently stored in:
+
+- `results.gas.tsv`
+
+Current V1 columns:
+
+```text
+commit	median_gas	status	description
 ```
-grep "^val_bpb:" run.log
-```
 
-## Logging results
+Statuses:
 
-When an experiment is done, log it to `results.tsv` (tab-separated, NOT comma-separated — commas break in descriptions).
+- `keep`
+- `discard`
+- `crash`
 
-The TSV has a header row and 5 columns:
+Use `0` for `median_gas` on crashes.
 
-```
-commit	val_bpb	memory_gb	status	description
-```
+When V2 begins producing real baselines, keep V2 results in a V2-specific log rather than mixing them into V1 history.
 
-1. git commit hash (short, 7 chars)
-2. val_bpb achieved (e.g. 1.234567) — use 0.000000 for crashes
-3. peak memory in GB, round to .1f (e.g. 12.3 — divide peak_vram_mb by 1024) — use 0.0 for crashes
-4. status: `keep`, `discard`, or `crash`
-5. short text description of what this experiment tried
+## Keep Or Discard Rule
 
-Example:
+Lower primary metric is better.
 
-```
-commit	val_bpb	memory_gb	status	description
-383abb4	2.667000	26.9	keep	baseline
-909dd59	2.588904	26.9	keep	halve total batch size to 2^16
-4161af3	2.533728	26.9	keep	increase matrix LR to 0.04
-```
+Keep a candidate when:
 
-## The experiment loop
+- validation passes
+- the primary metric is present
+- the primary metric improves meaningfully
+- the code does not become unjustifiably more complex
 
-The experiment runs on a dedicated branch (e.g. `autoresearch/mar5` or `autoresearch/mar5-gpu0`).
+Discard a candidate when:
 
-LOOP FOREVER:
+- the metric is flat and the code is not simpler
+- the metric is worse
+- the change adds complexity without enough payoff
 
-1. Look at the git state: the current branch/commit we're on
-2. Tune `train.py` with an experimental idea by directly hacking the code.
-3. `git add autoresearch-mlx/train.py && git commit -m "experiment: <description>"` (never `git add -A` — this may be inside a larger repo)
-4. Run the experiment: `uv run train.py > run.log 2>&1` (redirect everything — do NOT use tee or let output flood your context)
-5. Read out the results: `grep "^val_bpb:\|^peak_vram_mb:" run.log`
-6. If the grep output is empty, the run crashed. Run `tail -n 50 run.log` to read the Python stack trace and attempt a fix. If you can't get things to work after more than a few attempts, give up.
-7. Record the results in the tsv
-8. If val_bpb improved (lower), `git add autoresearch-mlx/results.tsv && git commit --amend --no-edit` to include the log, advancing the branch
-9. If val_bpb is equal or worse, record the discard commit hash, then `git reset --hard <previous kept commit>` to discard it cleanly
+Crash a candidate when:
 
-The idea is that you are a completely autonomous researcher trying things out. If they work, keep. If they don't, discard. And you're advancing the branch so that you can iterate. If you feel like you're getting stuck in some way, you can rewind but you should probably do this very very sparingly (if ever).
+- tests fail
+- invariants fail
+- the benchmark fails
+- the metric is missing
+- the run times out
 
-**Timeout**: Each experiment should take ~7 minutes total (5 min training + ~1 min compile/eval overhead on Apple Silicon). If a run exceeds 15 minutes, kill it and treat it as a failure (discard and revert).
+## Practical Rules
 
-**Crashes**: If a run crashes (OOM, or a bug, or etc.), use your judgment: If it's something dumb and easy to fix (e.g. a typo, a missing import), fix it and re-run. If the idea itself is fundamentally broken, just skip it, log "crash" as the status in the tsv, and move on.
+- Compare only against the current kept local baseline for the chosen target.
+- Keep execution deterministic and offline.
+- Prefer simple, interpretable changes.
+- Preserve V1 command behavior while V2 is being introduced.
+- Keep the runner simpler than the arena it orchestrates.
+- Avoid broad framework rewrites when a narrow harness extension is enough.
+- Do not treat V2 as complete before there is a real baseline.
 
-**NEVER STOP**: Once the experiment loop has begun (after the initial setup), do NOT pause to ask the human if you should continue. Do NOT ask "should I keep going?" or "is this a good stopping point?". The human might be asleep, or gone from a computer and expects you to continue working *indefinitely* until you are manually stopped. You are autonomous. If you run out of ideas, think harder — read papers referenced in the code, re-read the in-scope files for new angles, try combining previous near-misses, try more radical architectural changes. The loop runs until the human interrupts you, period.
+## Current Best
 
-As an example use case, a user might leave you running while they sleep. If each experiment takes you ~7 minutes then you can run approx 8-9/hour, for a total of about 70 over the duration of the average human sleep. The user then wakes up to experimental results, all completed by you while they slept!
+At the time this file was last aligned:
+
+- V1 best kept commit: `e3160d8`
+- V1 best `median_gas`: `1502102`
+
+That is a useful reference point, not the final project claim.
