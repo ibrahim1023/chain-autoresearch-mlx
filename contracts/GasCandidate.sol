@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 contract GasCandidate {
     error LengthMismatch();
 
-    mapping(address => bool) public registered;
+    mapping(address => uint256) public memberIndex;
     mapping(address => uint256) public scores;
     address[] internal members;
     uint256 public totalScore;
@@ -14,9 +14,9 @@ contract GasCandidate {
         address[] storage memberList = members;
         for (uint256 i = 0; i < len; ++i) {
             address account = accounts[i];
-            if (!registered[account]) {
-                registered[account] = true;
+            if (memberIndex[account] == 0) {
                 memberList.push(account);
+                memberIndex[account] = memberList.length;
                 added += 1;
             }
         }
