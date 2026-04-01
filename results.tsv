@@ -28,3 +28,4 @@ e80c7af	1.490826	10.7	discard	lower embedding lr to 0.5 on depth 3
 4e0ac90	1.541149	10.7	discard	increase scalar lr to 0.6 on depth 3
 f5bd1f9	1.488063	10.7	discard	increase weight decay to 0.25 on depth 3
 41d1987	1.540946	10.7	discard	add 2 percent warmup on depth 3
+8e67ad1	1.522676	10.7	discard	raise adam beta1 to 0.85 on depth 3
