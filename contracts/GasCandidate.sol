@@ -30,24 +30,28 @@ contract GasCandidate {
             revert LengthMismatch();
         }
 
+        uint256 runningTotal = totalScore;
         for (uint256 i = 0; i < len; ++i) {
             address account = accounts[i];
             uint256 oldScore = scores[account];
             uint256 newScore = newScores[i];
             scores[account] = newScore;
-            totalScore = totalScore - oldScore + newScore;
+            runningTotal = runningTotal - oldScore + newScore;
             appliedTotal += newScore;
         }
+        totalScore = runningTotal;
     }
 
     function bumpAll(uint256 amount) external returns (uint256 updated) {
         uint256 len = members.length;
+        uint256 runningTotal = totalScore;
         for (uint256 i = 0; i < len; ++i) {
             address account = members[i];
             scores[account] += amount;
-            totalScore += amount;
+            runningTotal += amount;
             updated += 1;
         }
+        totalScore = runningTotal;
     }
 
     function memberCount() external view returns (uint256) {
