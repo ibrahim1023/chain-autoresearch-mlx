@@ -25,3 +25,4 @@ cb3cda9	1.524989	10.7	discard	lower matrix lr to 0.003 on depth 3
 e117614	1.479646	10.7	keep	lower unembedding lr to 0.003 on depth 3
 b51129a	1.520078	10.7	discard	lower unembedding lr to 0.002 on depth 3
 e80c7af	1.490826	10.7	discard	lower embedding lr to 0.5 on depth 3
+4e0ac90	1.541149	10.7	discard	increase scalar lr to 0.6 on depth 3
