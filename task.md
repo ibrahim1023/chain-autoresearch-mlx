@@ -105,11 +105,18 @@ Current V2 benchmark definition:
 
 ## 5. Extend The Runner For V2
 
-- [ ] Generalize the experiment runner so it can target a selected V2 contract arena.
-- [ ] Emit structured output that is useful for both humans and automation.
-- [ ] Support per-contract benchmark selection without widening the editable surface.
-- [ ] Preserve crash classification, timeout handling, and deterministic result logging.
-- [ ] Keep the runner simpler than the arena it orchestrates.
+- [x] Generalize the experiment runner so it can target a selected V2 contract arena.
+- [x] Emit structured output that is useful for both humans and automation.
+- [x] Support per-contract benchmark selection without widening the editable surface.
+- [x] Preserve crash classification, timeout handling, and deterministic result logging.
+- [x] Keep the runner simpler than the arena it orchestrates.
+
+Current runner behavior:
+
+- `python scripts/run_gas_experiment.py` still runs the V1 path by default
+- `python scripts/run_gas_experiment.py --arena gas_pack --target TokenLedger` runs the V2 path for one selected contract
+- `python scripts/run_gas_benchmark.py --arena gas_pack --target RewardDistributor` runs the target-specific benchmark only
+- benchmark snapshots use `--offline` by default to avoid the local Foundry proxy crash seen with plain `forge snapshot`
 
 ## 6. Build The First V2 Baseline
 
