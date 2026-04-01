@@ -15,8 +15,9 @@ contract GasCandidate {
         for (uint256 i = 0; i < len; ++i) {
             address account = accounts[i];
             if (memberIndex[account] == 0) {
+                uint256 nextIndex = memberList.length + 1;
                 memberList.push(account);
-                memberIndex[account] = memberList.length;
+                memberIndex[account] = nextIndex;
                 added += 1;
             }
         }
