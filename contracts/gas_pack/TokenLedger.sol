@@ -13,13 +13,22 @@ contract TokenLedger {
         uint256 length = accounts.length;
         if (length != amounts.length) revert LengthMismatch();
 
-        for (uint256 i = 0; i < length; ++i) {
-            address account = accounts[i];
+        for (uint256 i = 0; i < length;) {
+            address account;
+            uint256 amount;
+            assembly {
+                account := calldataload(add(accounts.offset, shl(5, i)))
+                amount := calldataload(add(amounts.offset, shl(5, i)))
+            }
+
             if (account == address(0)) revert ZeroAddress();
 
-            uint256 amount = amounts[i];
             balanceOf[account] += amount;
             minted += amount;
+
+            unchecked {
+                ++i;
+            }
         }
 
         totalSupply += minted;
