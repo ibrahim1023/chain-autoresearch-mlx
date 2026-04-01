@@ -3,3 +3,4 @@ uncommitted	1517965	keep	baseline gas benchmark for GasCandidate.sol
 b7c9482	1512085	keep	batch totalScore storage updates
 7715f95	1512085	discard	use unchecked loop increments
 61c852c	1507452	keep	cache members storage reference
+e3160d8	1502102	keep	replace registered mapping with index mapping
