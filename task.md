@@ -140,11 +140,29 @@ Current first V2 baseline:
 
 ## 7. Run The First V2 Search Pass
 
-- [ ] Choose one V2 contract as the first target.
-- [ ] Run a disciplined keep-or-discard loop on that contract only.
-- [ ] Log all V2 attempts cleanly.
-- [ ] Stop only when the local frontier goes flat for that target.
-- [ ] Summarize whether V2 is already producing more credible wins than V1.
+- [x] Choose one V2 contract as the first target.
+- [x] Run a disciplined keep-or-discard loop on that contract only.
+- [x] Log all V2 attempts cleanly.
+- [x] Stop only when the local frontier goes flat for that target.
+- [x] Summarize whether V2 is already producing more credible wins than V1.
+
+Current first V2 search-pass summary:
+
+- target: `TokenLedger`
+- baseline start: `835526`
+- kept improvement:
+  - commit: `ee43f7a`
+  - description: `load mintBatch inputs from calldata`
+  - improved `median_gas`: `813699`
+- discarded attempts:
+  - `be71b13` - `unchecked mintBatch loop increment`
+  - `9261f83` - `add single-mint fast path`
+- current kept TokenLedger state:
+  - code state restored to the kept path after discards
+  - results log retained all attempts in `results.gas_pack.tsv`
+- interpretation:
+  - V2 is already more credible than V1 in the limited sense that the optimization is happening on a more realistic contract pattern than the toy single-contract arena
+  - V2 is not yet strongly credible because invariant coverage is still missing and only one contract has been searched so far
 
 ## 8. Strengthen Validation
 
