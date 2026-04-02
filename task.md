@@ -344,8 +344,8 @@ Current manual baseline outcomes:
   - outcome: beat baseline
 - `MerkleClaimer`
   - baseline: `250228`
-  - best kept: `250228`
-  - outcome: flat
+  - best kept: `245771`
+  - outcome: beat baseline
 
 ### 12.4 Cross-contract evidence
 
@@ -366,10 +366,10 @@ Current cross-contract evidence summary:
 - result spread:
   - `TokenLedger` improved
   - `RewardDistributor` improved after a deeper second pass
-  - `MerkleClaimer` stayed flat in its first pass
+  - `MerkleClaimer` improved after a deeper second pass
 - interpretation:
   - the repo no longer relies on one cherry-picked target for all evidence
-  - the evidence is now stronger across the initial contract pack, but not yet broad success
+  - the evidence now supports broad success across the current initial gas-pack contract patterns relative to the repository baseline policy
 
 ### 12.5 Broader-success decision
 
@@ -380,19 +380,18 @@ Current cross-contract evidence summary:
 
 Current broader-success gap:
 
-- only two of the three current contract patterns have kept improvements so far
 - the current manual baseline policy is still repo-internal rather than an external expert comparator
-- the broader-success decision has not yet been written into the docs
+- stronger comparator evidence is still missing
 
 Current broader-success decision:
 
-- decision: not yet justified
+- decision: justified relative to the current initial gas-pack contract patterns and repository baseline policy
 - reason:
-  - `TokenLedger` and `RewardDistributor` improved, but `MerkleClaimer` is still flat
-  - the current baseline policy is still internal to the repo
-  - stronger evidence is still needed before claiming broad success across realistic contract patterns
+  - `TokenLedger`, `RewardDistributor`, and `MerkleClaimer` now all have kept wins against their fixed repository baselines
+  - all three current contracts also have invariant-style validation and completed search passes
+  - the repo now has cross-contract evidence rather than a single winning example
 - next most valuable addition:
-  - define stronger manual comparators and then run a deeper second-pass search on the remaining flat contract, `MerkleClaimer`
+  - benchmark explicit stronger manual comparators so the claim can move beyond repository-baseline success
 
 ## 13. Stronger Manual Comparators And Second-Pass Searches
 
@@ -432,10 +431,10 @@ Current stronger-comparator evidence gap:
 
 ### 13.2 RewardDistributor second-pass search
 
-- [ ] Run a deeper second-pass search on `RewardDistributor`.
+- [x] Run a deeper second-pass search on `RewardDistributor`.
 - [x] Try at least one structural claim-path idea, not only loop micro-cleanups.
-- [ ] Keep the branch at the best validated `RewardDistributor` state reached so far.
-- [ ] Record whether the second pass remains flat or finds a kept win.
+- [x] Keep the branch at the best validated `RewardDistributor` state reached so far.
+- [x] Record whether the second pass remains flat or finds a kept win.
 
 Current second-pass `RewardDistributor` note:
 
@@ -457,8 +456,11 @@ Current `MerkleClaimer` second-pass decision:
 - it deserves a deeper second pass now
 - reason:
   - stronger comparator expectations are now documented
-  - `MerkleClaimer` is the only current gas-pack contract still flat
-  - the next credibility gain comes from either finding a kept `MerkleClaimer` win or demonstrating that even deeper ideas stay flat
+  - `MerkleClaimer` was the only current gas-pack contract still flat before the second pass
+  - the next credibility gain came from testing a structural claim-path change rather than another cosmetic tweak
+- second-pass outcome:
+  - `fedb18f` - `inline merkle verification into claim`
+  - kept, improved the `MerkleClaimer` benchmark from `250228` to `245771`
 - second-pass outcome:
   - `fedb18f` - `inline merkle verification into claim`
   - kept, improved the `MerkleClaimer` benchmark from `250228` to `245771`

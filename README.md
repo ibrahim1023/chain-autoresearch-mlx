@@ -79,9 +79,9 @@ The goal is still to keep the research loop narrow. Even within a pack, each sea
 Today the repo can honestly claim:
 
 - a working V2 `gas_pack` harness exists
-- `TokenLedger` has a real baseline and a completed keep-or-discard search pass
-- the best kept `TokenLedger` result improved `median_gas` from `835526` to `813699`
-- `TokenLedger` now has invariant-style validation in addition to correctness tests
+- all three initial gas-pack contracts have real baselines and completed search passes
+- `TokenLedger`, `RewardDistributor`, and `MerkleClaimer` each now have a kept improvement over their repository baselines
+- all three current gas-pack contracts now have invariant-style validation in addition to correctness tests
 
 That is stronger than V1, but it is still not the final research bar.
 
@@ -113,19 +113,19 @@ Current outcomes:
 
 - `TokenLedger`: baseline `835526`, best kept `813699`, beat baseline
 - `RewardDistributor`: baseline `887232`, best kept `862368`, beat baseline
-- `MerkleClaimer`: baseline `250228`, best kept `250228`, flat so far
+- `MerkleClaimer`: baseline `250228`, best kept `245771`, beat baseline
 
-This means the repo now has stronger multi-contract evidence than before, but not yet broad success.
+This means the repo now has broad success across the current initial gas-pack contract patterns relative to the repository baseline policy.
 
-Why not yet:
+What it still does not prove:
 
-- only two of the three current contract patterns have kept improvements
 - explicit stronger manual comparators beyond the repository baselines are not yet defined
-- more evidence is still needed before making a broader success claim
+- superiority over those stronger manual comparators
+- a generally reliable autonomous blockchain optimizer outside the current fixed pack
 
 Current decision:
 
-- broader success across realistic contract patterns is not yet justified
+- broader success across the current initial gas-pack contract patterns is justified
 
 ## Stronger Comparator Gap
 

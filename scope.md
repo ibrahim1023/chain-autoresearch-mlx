@@ -107,19 +107,18 @@ At the current repository state, the strongest honest claim is:
 
 - the repo has a working V2 gas-pack harness
 - it has completed search passes on all three initial gas-pack contracts
-- it has kept gas wins on `TokenLedger` and `RewardDistributor` under stronger validation paths than V1
+- it has kept gas wins on `TokenLedger`, `RewardDistributor`, and `MerkleClaimer` under stronger validation paths than V1
 
 The repo should not yet claim:
 
-- broad success across realistic contract patterns
 - superiority over strong manual baselines
 - a generally reliable autonomous blockchain optimizer
 
 The next work needed for a stronger claim is:
 
-- complete comparable search passes on additional V2 contracts
-- add invariant-style validation beyond `TokenLedger`
-- define and beat explicit manual baselines for at least one realistic contract
+- define and benchmark stronger manual comparators beyond the current repository baseline policy
+- expand the pack or repeat the result on additional realistic contract patterns
+- show that the wins remain credible against a stronger comparison bar
 
 ## Manual Baseline Policy
 
@@ -181,18 +180,19 @@ Current fixed-pack evidence looks like this:
   - baseline: `887232`
   - outcome: beat the current manual baseline
 - `MerkleClaimer`
-  - best kept result: `250228`
+  - best kept result: `245771`
   - baseline: `250228`
-  - outcome: no improvement yet
+  - outcome: beat the current manual baseline
 
 This means the repo now has:
 
 - multi-contract validation coverage across the initial gas-pack
 - multi-contract baseline coverage across the initial gas-pack
-- two contracts with kept gas wins
-- one contract with an honest flat result
+- three contracts with kept gas wins
 
-That is materially better evidence than a single winning example, but it is still not broad success.
+That is enough to support a narrower claim of broad success across the current initial gas-pack contract patterns.
+
+It is still not enough to support a stronger claim of superiority over stronger manual comparators or of a generally reliable autonomous blockchain optimizer.
 
 ## Arena Model
 
