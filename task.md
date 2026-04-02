@@ -403,17 +403,31 @@ The goal is to answer a harder question:
 
 ### 13.1 Stronger manual comparator policy
 
-- [ ] Define a stronger manual comparator style for `TokenLedger`.
-- [ ] Define a stronger manual comparator style for `RewardDistributor`.
-- [ ] Define a stronger manual comparator style for `MerkleClaimer`.
-- [ ] Explain how those stronger comparators differ from the current repository baseline policy.
-- [ ] Record where the repo still lacks evidence against those stronger comparators.
+- [x] Define a stronger manual comparator style for `TokenLedger`.
+- [x] Define a stronger manual comparator style for `RewardDistributor`.
+- [x] Define a stronger manual comparator style for `MerkleClaimer`.
+- [x] Explain how those stronger comparators differ from the current repository baseline policy.
+- [x] Record where the repo still lacks evidence against those stronger comparators.
 
 Working definition for the next tranche:
 
 - a stronger manual comparator should be a plausible careful human gas-aware implementation, not merely the first readable draft
 - it should still live under the same fixed benchmark and validation surface
 - it should be documented explicitly so later claims are auditable
+
+Current stronger comparator definitions:
+
+- `TokenLedger`
+  - comparator style: careful human specialization of common mint and transfer paths with reduced repeated reads and unnecessary writes
+- `RewardDistributor`
+  - comparator style: careful human specialization of zero-accrual setup and claim-path accounting hot spots
+- `MerkleClaimer`
+  - comparator style: careful human specialization of proof traversal and claim-state handling hot spots
+
+Current stronger-comparator evidence gap:
+
+- the repo has not yet frozen separate stronger manual comparator implementations and benchmarked them directly
+- current wins still only beat the repository baseline policy, not those stronger explicit comparators
 
 ### 13.2 RewardDistributor second-pass search
 

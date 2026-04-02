@@ -137,6 +137,37 @@ Current manual baselines are:
 - `RewardDistributor`: commit `ffa7fae`, `median_gas = 887232`
 - `MerkleClaimer`: commit `11f5a1f`, `median_gas = 250228`
 
+## Stronger Manual Comparator Policy
+
+The next comparison bar should be stricter than the repository baseline policy.
+
+A stronger manual comparator means:
+
+- a plausible careful human gas-aware implementation
+- still readable and maintainable
+- still constrained by the same fixed benchmark and validation surface
+- chosen explicitly before claiming that the loop beat it
+
+Current stronger comparator styles are:
+
+- `TokenLedger`
+  - comparator style: a careful human implementation that specializes common mint and transfer paths, minimizes repeated reads, and avoids unnecessary storage writes while preserving simple accounting
+- `RewardDistributor`
+  - comparator style: a careful human implementation that optimizes the zero-accrual setup path, avoids redundant debt updates, and treats claim-path accounting as the main gas hotspot
+- `MerkleClaimer`
+  - comparator style: a careful human implementation that treats proof verification and claim-state writes as the main hotspot, and uses simple but gas-aware proof traversal without sacrificing correctness clarity
+
+These stronger comparators differ from the repository baseline policy because they assume:
+
+- intentional gas-aware design choices from the start
+- hotspot-aware structure rather than merely readability-first code
+- explicit comparison against a more competent manual implementation style
+
+The repo still lacks direct evidence against those stronger comparators because:
+
+- no separate stronger-comparator implementations have been frozen and benchmarked yet
+- current wins only beat the repository's first validated drafts
+
 ## Cross-Contract Evidence
 
 Current fixed-pack evidence looks like this:

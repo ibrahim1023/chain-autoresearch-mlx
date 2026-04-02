@@ -127,6 +127,26 @@ Current decision:
 
 - broader success across realistic contract patterns is not yet justified
 
+## Stronger Comparator Gap
+
+The next bar is not just "beat the repo's first validated draft."
+
+For each contract, the repo now treats the stronger comparison target as a plausible careful human gas-aware implementation:
+
+- `TokenLedger`: human-specialized common mint and transfer paths
+- `RewardDistributor`: human-specialized zero-accrual setup and claim-path accounting
+- `MerkleClaimer`: human-specialized proof traversal and claim-state handling
+
+The repo does not yet have direct benchmark evidence against those stronger comparators.
+
+So the current wins should still be read as:
+
+- beat the repository baseline
+
+not yet:
+
+- beat a stronger human gas-aware implementation
+
 ## Repository Anchors
 
 - `scope.md`: source of truth for project direction
