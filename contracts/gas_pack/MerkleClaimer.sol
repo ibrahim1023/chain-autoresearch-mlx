@@ -16,8 +16,23 @@ contract MerkleClaimer {
         external
         returns (uint256 newlyClaimed)
     {
-        bytes32 leaf = keccak256(abi.encode(account, totalEntitlement));
-        if (!_verifyProof(leaf, proof)) revert InvalidProof();
+        bytes32 computed = keccak256(abi.encode(account, totalEntitlement));
+        uint256 length = proof.length;
+
+        for (uint256 i = 0; i < length;) {
+            bytes32 sibling = proof[i];
+            if (computed <= sibling) {
+                computed = keccak256(abi.encodePacked(computed, sibling));
+            } else {
+                computed = keccak256(abi.encodePacked(sibling, computed));
+            }
+
+            unchecked {
+                ++i;
+            }
+        }
+
+        if (computed != merkleRoot) revert InvalidProof();
 
         uint256 alreadyClaimed = claimedAmount[account];
         if (totalEntitlement <= alreadyClaimed) revert NothingToClaim();
@@ -26,21 +41,5 @@ contract MerkleClaimer {
             newlyClaimed = totalEntitlement - alreadyClaimed;
         }
         claimedAmount[account] = totalEntitlement;
-    }
-
-    function _verifyProof(bytes32 leaf, bytes32[] calldata proof) internal view returns (bool) {
-        bytes32 computed = leaf;
-        uint256 length = proof.length;
-
-        for (uint256 i = 0; i < length; ++i) {
-            bytes32 sibling = proof[i];
-            if (computed <= sibling) {
-                computed = keccak256(abi.encodePacked(computed, sibling));
-            } else {
-                computed = keccak256(abi.encodePacked(sibling, computed));
-            }
-        }
-
-        return computed == merkleRoot;
     }
 }

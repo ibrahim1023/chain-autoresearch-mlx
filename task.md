@@ -447,6 +447,14 @@ Current second-pass `RewardDistributor` note:
 
 ### 13.3 MerkleClaimer second-pass search
 
-- [ ] Decide whether `MerkleClaimer` deserves a deeper second pass now or should wait until stronger comparators are defined.
+- [x] Decide whether `MerkleClaimer` deserves a deeper second pass now or should wait until stronger comparators are defined.
 - [ ] If it gets a second pass, try at least one structural proof-verification or claim-state idea.
 - [ ] Record whether that deeper pass remains flat or finds a kept win.
+
+Current `MerkleClaimer` second-pass decision:
+
+- it deserves a deeper second pass now
+- reason:
+  - stronger comparator expectations are now documented
+  - `MerkleClaimer` is the only current gas-pack contract still flat
+  - the next credibility gain comes from either finding a kept `MerkleClaimer` win or demonstrating that even deeper ideas stay flat
