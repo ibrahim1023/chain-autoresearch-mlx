@@ -4,3 +4,4 @@ be71b13	835526	discard	unchecked mintBatch loop increment
 ee43f7a	813699	keep	load mintBatch inputs from calldata
 9261f83	839688	discard	add single-mint fast path
 ffa7fae	887232	keep	baseline RewardDistributor gas_pack v2
+c26833e	889825	discard	cache reward accumulator in setShares
