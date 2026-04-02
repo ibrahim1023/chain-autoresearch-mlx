@@ -518,3 +518,57 @@ Current stronger-comparator decision:
   - `MerkleClaimer` does not; the frozen stronger comparator remains better on the fixed benchmark
 - next most valuable search target:
   - `MerkleClaimer`, now judged against the explicit stronger comparator rather than only the repository baseline
+
+## 14. Clear The Stronger-Comparator Bar
+
+This phase is about closing the one remaining gap inside the current fixed pack.
+
+The point is not to broaden the arena yet.
+
+The point is to see whether the current loop can beat the frozen stronger manual comparator on the last remaining contract pattern.
+
+### 14.1 MerkleClaimer third-pass search
+
+- [ ] Run a dedicated third-pass search on `MerkleClaimer` against the stronger-comparator bar.
+- [ ] Treat the frozen stronger comparator `median_gas = 236456` as the score to beat, not only the repository baseline.
+- [ ] Try at least one structural proof-hashing idea in `contracts/gas_pack/MerkleClaimer.sol`.
+- [ ] Try at least one claim-state write-path idea in `contracts/gas_pack/MerkleClaimer.sol`.
+- [ ] Keep or discard each attempt using the stronger-comparator bar plus the existing validation surface.
+- [ ] Leave the branch at the best validated `MerkleClaimer` state reached so far.
+- [ ] Record all stronger-comparator attempts in `results.gas_pack.tsv` or a clearly documented successor log.
+
+Current `MerkleClaimer` stronger-comparator gap:
+
+- current kept result: `245771`
+- frozen stronger comparator: `236456`
+- gap to close: `9315`
+
+### 14.2 Stronger-comparator pack decision
+
+- [ ] Decide whether all three current gas-pack contracts now beat their frozen stronger manual comparators.
+- [ ] If yes, update `scope.md` and `README.md` to state that stronger-comparator success is justified for the current fixed pack.
+- [ ] If no, keep the claim boundary unchanged and state exactly which contract still fails that bar.
+- [ ] Record the next most valuable move after the decision.
+
+Current decision gate:
+
+- this section stays open until `MerkleClaimer` either beats `236456` or is honestly judged flat against that bar
+
+## 15. Decide Whether To Expand The Pack
+
+This phase should only begin after phase 14 is settled.
+
+The repo should not add breadth just to avoid the remaining harder comparison.
+
+### 15.1 Expansion decision
+
+- [ ] Decide whether the next move should be:
+  - adding a fourth realistic contract pattern
+  - or strengthening comparator quality further for the current three
+- [ ] If a fourth contract is added, define it explicitly before implementation.
+- [ ] Do not start that expansion until the current stronger-comparator claim boundary is settled.
+
+Suggested expansion candidates once phase 14 is complete:
+
+- a vault-style accounting contract
+- a staking or delegation accounting contract
