@@ -339,8 +339,8 @@ Current manual baseline outcomes:
   - outcome: beat baseline
 - `RewardDistributor`
   - baseline: `887232`
-  - best kept: `887232`
-  - outcome: flat
+  - best kept: `862368`
+  - outcome: beat baseline
 - `MerkleClaimer`
   - baseline: `250228`
   - best kept: `250228`
@@ -364,11 +364,11 @@ Current cross-contract evidence summary:
   - at least one completed search pass
 - result spread:
   - `TokenLedger` improved
-  - `RewardDistributor` stayed flat in its first pass
+  - `RewardDistributor` improved after a deeper second pass
   - `MerkleClaimer` stayed flat in its first pass
 - interpretation:
   - the repo no longer relies on one cherry-picked target for all evidence
-  - the evidence is broader than before, but not yet broad success
+  - the evidence is now stronger across the initial contract pack, but not yet broad success
 
 ### 12.5 Broader-success decision
 
@@ -379,7 +379,7 @@ Current cross-contract evidence summary:
 
 Current broader-success gap:
 
-- only one of the three current contract patterns has a kept improvement so far
+- only two of the three current contract patterns have kept improvements so far
 - the current manual baseline policy is still repo-internal rather than an external expert comparator
 - the broader-success decision has not yet been written into the docs
 
@@ -387,11 +387,11 @@ Current broader-success decision:
 
 - decision: not yet justified
 - reason:
-  - `TokenLedger` improved, but `RewardDistributor` and `MerkleClaimer` were flat in their first passes
+  - `TokenLedger` and `RewardDistributor` improved, but `MerkleClaimer` is still flat
   - the current baseline policy is still internal to the repo
   - stronger evidence is still needed before claiming broad success across realistic contract patterns
 - next most valuable addition:
-  - define stronger manual comparators and then run a deeper second-pass search on the flattest contracts, starting with `RewardDistributor`
+  - define stronger manual comparators and then run a deeper second-pass search on the remaining flat contract, `MerkleClaimer`
 
 ## 13. Stronger Manual Comparators And Second-Pass Searches
 

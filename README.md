@@ -112,14 +112,14 @@ Using the current repository policy, the "obvious manual baseline" for each cont
 Current outcomes:
 
 - `TokenLedger`: baseline `835526`, best kept `813699`, beat baseline
-- `RewardDistributor`: baseline `887232`, best kept `887232`, flat so far
+- `RewardDistributor`: baseline `887232`, best kept `862368`, beat baseline
 - `MerkleClaimer`: baseline `250228`, best kept `250228`, flat so far
 
-This means the repo now has multi-contract evidence, but not yet broad success.
+This means the repo now has stronger multi-contract evidence than before, but not yet broad success.
 
 Why not yet:
 
-- only one of the three current contract patterns has a kept improvement
+- only two of the three current contract patterns have kept improvements
 - explicit stronger manual comparators beyond the repository baselines are not yet defined
 - more evidence is still needed before making a broader success claim
 

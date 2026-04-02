@@ -106,8 +106,8 @@ not:
 At the current repository state, the strongest honest claim is:
 
 - the repo has a working V2 gas-pack harness
-- it has one completed search pass on `TokenLedger`
-- it has one kept gas win under a stronger validation path than V1
+- it has completed search passes on all three initial gas-pack contracts
+- it has kept gas wins on `TokenLedger` and `RewardDistributor` under stronger validation paths than V1
 
 The repo should not yet claim:
 
@@ -146,9 +146,9 @@ Current fixed-pack evidence looks like this:
   - baseline: `835526`
   - outcome: beat the current manual baseline
 - `RewardDistributor`
-  - best kept result: `887232`
+  - best kept result: `862368`
   - baseline: `887232`
-  - outcome: no improvement yet
+  - outcome: beat the current manual baseline
 - `MerkleClaimer`
   - best kept result: `250228`
   - baseline: `250228`
@@ -158,10 +158,10 @@ This means the repo now has:
 
 - multi-contract validation coverage across the initial gas-pack
 - multi-contract baseline coverage across the initial gas-pack
-- one contract with a kept gas win
-- two contracts with honest flat first passes
+- two contracts with kept gas wins
+- one contract with an honest flat result
 
-That is better evidence than a single winning example, but it is still not broad success.
+That is materially better evidence than a single winning example, but it is still not broad success.
 
 ## Arena Model
 
