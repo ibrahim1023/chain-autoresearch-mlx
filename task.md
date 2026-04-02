@@ -289,11 +289,18 @@ Current `RewardDistributor` search-pass summary:
 
 ### 12.2 MerkleClaimer tranche
 
-- [ ] Add invariant-style validation for `MerkleClaimer`.
-- [ ] Ensure the runner treats that invariant step as required for valid `MerkleClaimer` optimization claims.
-- [ ] Record the first `MerkleClaimer` baseline in `results.gas_pack.tsv` or a clearly documented successor log.
+- [x] Add invariant-style validation for `MerkleClaimer`.
+- [x] Ensure the runner treats that invariant step as required for valid `MerkleClaimer` optimization claims.
+- [x] Record the first `MerkleClaimer` baseline in `results.gas_pack.tsv` or a clearly documented successor log.
 - [ ] Run a disciplined keep-or-discard search pass on `MerkleClaimer`.
 - [ ] Leave the branch at the best kept `MerkleClaimer` state reached so far.
+
+Current `MerkleClaimer` baseline:
+
+- baseline commit: `11f5a1f`
+- baseline `median_gas`: `250228`
+- per-case benchmark gas:
+  - `testGasMerkleClaimerClaimDepth3`: `250228`
 
 ### 12.3 Manual baseline comparison
 

@@ -89,6 +89,7 @@ def resolve_arena_config(arena: str, target: str | None) -> ArenaConfig:
         invariant_cmd={
             "TokenLedger": ["forge", "test", "--match-path", "test/gas_pack/TokenLedgerInvariant.t.sol"],
             "RewardDistributor": ["forge", "test", "--match-path", "test/gas_pack/RewardDistributorInvariant.t.sol"],
+            "MerkleClaimer": ["forge", "test", "--match-path", "test/gas_pack/MerkleClaimerInvariant.t.sol"],
         }.get(target),
         snapshot_cmd=[
             "forge",
