@@ -5,7 +5,7 @@ contract MerkleClaimer {
     error InvalidProof();
     error NothingToClaim();
 
-    bytes32 public merkleRoot;
+    bytes32 public immutable merkleRoot;
     mapping(address => uint256) public claimedAmount;
 
     constructor(bytes32 root) {
