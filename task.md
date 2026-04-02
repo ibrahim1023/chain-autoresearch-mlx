@@ -262,8 +262,8 @@ The point is to show that the same disciplined loop works repeatedly on differen
 - [x] Add invariant-style validation for `RewardDistributor`.
 - [x] Ensure the runner treats that invariant step as required for valid `RewardDistributor` optimization claims.
 - [x] Record the first `RewardDistributor` baseline in `results.gas_pack.tsv` or a clearly documented successor log.
-- [ ] Run a disciplined keep-or-discard search pass on `RewardDistributor`.
-- [ ] Leave the branch at the best kept `RewardDistributor` state reached so far.
+- [x] Run a disciplined keep-or-discard search pass on `RewardDistributor`.
+- [x] Leave the branch at the best kept `RewardDistributor` state reached so far.
 
 Current `RewardDistributor` baseline:
 
@@ -272,6 +272,20 @@ Current `RewardDistributor` baseline:
 - per-case benchmark gas:
   - `testGasRewardDistributorClaimAfterDeposit16`: `931288`
   - `testGasRewardDistributorSetShares16`: `843177`
+
+Current `RewardDistributor` search-pass summary:
+
+- baseline start: `887232`
+- kept improvements:
+  - none yet
+- discarded attempts:
+  - `c26833e` - `cache reward accumulator in setShares`
+  - `e590b35` - `unchecked setShares loop increment`
+- current kept RewardDistributor state:
+  - restored to the validated baseline after discards
+- interpretation:
+  - the current local frontier is flat for the low-risk `setShares` ideas tried so far
+  - a stronger next attempt would likely need a more structural accounting change rather than micro loop cleanup alone
 
 ### 12.2 MerkleClaimer tranche
 
