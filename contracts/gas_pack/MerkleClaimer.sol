@@ -32,16 +32,12 @@ contract MerkleClaimer {
         bytes32 computed = leaf;
         uint256 length = proof.length;
 
-        for (uint256 i = 0; i < length;) {
+        for (uint256 i = 0; i < length; ++i) {
             bytes32 sibling = proof[i];
             if (computed <= sibling) {
                 computed = keccak256(abi.encodePacked(computed, sibling));
             } else {
                 computed = keccak256(abi.encodePacked(sibling, computed));
-            }
-
-            unchecked {
-                ++i;
             }
         }
 

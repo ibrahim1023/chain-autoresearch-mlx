@@ -292,8 +292,8 @@ Current `RewardDistributor` search-pass summary:
 - [x] Add invariant-style validation for `MerkleClaimer`.
 - [x] Ensure the runner treats that invariant step as required for valid `MerkleClaimer` optimization claims.
 - [x] Record the first `MerkleClaimer` baseline in `results.gas_pack.tsv` or a clearly documented successor log.
-- [ ] Run a disciplined keep-or-discard search pass on `MerkleClaimer`.
-- [ ] Leave the branch at the best kept `MerkleClaimer` state reached so far.
+- [x] Run a disciplined keep-or-discard search pass on `MerkleClaimer`.
+- [x] Leave the branch at the best kept `MerkleClaimer` state reached so far.
 
 Current `MerkleClaimer` baseline:
 
@@ -301,6 +301,19 @@ Current `MerkleClaimer` baseline:
 - baseline `median_gas`: `250228`
 - per-case benchmark gas:
   - `testGasMerkleClaimerClaimDepth3`: `250228`
+
+Current `MerkleClaimer` search-pass summary:
+
+- baseline start: `250228`
+- kept improvements:
+  - none yet
+- discarded attempts:
+  - `71852b2` - `unchecked merkle proof loop increment`
+- current kept MerkleClaimer state:
+  - restored to the validated baseline after discards
+- interpretation:
+  - the current local frontier is flat for the simplest proof-loop cleanup tried so far
+  - a stronger next attempt would likely need a more structural proof-verification or claim-state change, not another cosmetic loop tweak
 
 ### 12.3 Manual baseline comparison
 
