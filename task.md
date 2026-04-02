@@ -390,3 +390,45 @@ Current broader-success decision:
   - stronger evidence is still needed before claiming broad success across realistic contract patterns
 - next most valuable addition:
   - define stronger manual comparators and then run a deeper second-pass search on the flattest contracts, starting with `RewardDistributor`
+
+## 13. Stronger Manual Comparators And Second-Pass Searches
+
+This phase is about moving beyond the current repository-internal baseline policy.
+
+The goal is to answer a harder question:
+
+- can the loop beat a stronger, explicitly chosen manual implementation style rather than only beating the repo's first validated draft
+
+### 13.1 Stronger manual comparator policy
+
+- [ ] Define a stronger manual comparator style for `TokenLedger`.
+- [ ] Define a stronger manual comparator style for `RewardDistributor`.
+- [ ] Define a stronger manual comparator style for `MerkleClaimer`.
+- [ ] Explain how those stronger comparators differ from the current repository baseline policy.
+- [ ] Record where the repo still lacks evidence against those stronger comparators.
+
+Working definition for the next tranche:
+
+- a stronger manual comparator should be a plausible careful human gas-aware implementation, not merely the first readable draft
+- it should still live under the same fixed benchmark and validation surface
+- it should be documented explicitly so later claims are auditable
+
+### 13.2 RewardDistributor second-pass search
+
+- [ ] Run a deeper second-pass search on `RewardDistributor`.
+- [x] Try at least one structural claim-path idea, not only loop micro-cleanups.
+- [ ] Keep the branch at the best validated `RewardDistributor` state reached so far.
+- [ ] Record whether the second pass remains flat or finds a kept win.
+
+Current second-pass `RewardDistributor` note:
+
+- structural idea tried:
+  - `fea6933` - `inline reward claim accrual path`
+- outcome:
+  - discarded, worse than the current validated baseline
+
+### 13.3 MerkleClaimer second-pass search
+
+- [ ] Decide whether `MerkleClaimer` deserves a deeper second pass now or should wait until stronger comparators are defined.
+- [ ] If it gets a second pass, try at least one structural proof-verification or claim-state idea.
+- [ ] Record whether that deeper pass remains flat or finds a kept win.
