@@ -103,6 +103,30 @@ not:
 
 - proven autonomous blockchain research
 
+## Current Cross-Contract Status
+
+The repo now has validated baseline coverage across all three initial gas-pack contracts.
+
+Using the current repository policy, the "obvious manual baseline" for each contract is the first validated readability-first implementation kept under the fixed benchmark and validation surface.
+
+Current outcomes:
+
+- `TokenLedger`: baseline `835526`, best kept `813699`, beat baseline
+- `RewardDistributor`: baseline `887232`, best kept `887232`, flat so far
+- `MerkleClaimer`: baseline `250228`, best kept `250228`, flat so far
+
+This means the repo now has multi-contract evidence, but not yet broad success.
+
+Why not yet:
+
+- only one of the three current contract patterns has a kept improvement
+- explicit stronger manual comparators beyond the repository baselines are not yet defined
+- more evidence is still needed before making a broader success claim
+
+Current decision:
+
+- broader success across realistic contract patterns is not yet justified
+
 ## Repository Anchors
 
 - `scope.md`: source of truth for project direction

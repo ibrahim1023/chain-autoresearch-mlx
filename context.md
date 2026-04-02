@@ -7,10 +7,10 @@ Project:
 - Purpose: Build a deterministic local blockchain autoresearch harness that can optimize realistic smart-contract implementations for gas under strong correctness constraints.
 
 Current Status:
-- Phase: V2 tranche wrap-up after completing the first realistic `gas_pack` baseline, first search pass, first invariant gate, and claim-boundary documentation.
+- Phase: Multi-contract evidence consolidation after completing initial tranches for `TokenLedger`, `RewardDistributor`, and `MerkleClaimer`.
 - Current branch: `codex-gas-pack-v2`
-- Current HEAD: `1d81d05`
-- Honest repo state: working V2 infrastructure with early promising results, but not yet a broad or strongly defensible autonomous blockchain research claim.
+- Current HEAD: `643393d`
+- Honest repo state: working V2 infrastructure with multi-contract validation and baseline coverage, but not yet broad success across realistic contract patterns.
 
 Completed In This Tranche:
 - Aligned `AGENTS.md`, `program.md`, `README.md`, and `task.md` with the V2 `gas_pack` direction.
@@ -29,7 +29,10 @@ Completed In This Tranche:
 - Recorded the first V2 baseline in `results.gas_pack.tsv`.
 - Completed the first V2 search pass on `TokenLedger`.
 - Added invariant-style validation for `TokenLedger` in `test/gas_pack/TokenLedgerInvariant.t.sol`.
+- Added invariant-style validation for `RewardDistributor` in `test/gas_pack/RewardDistributorInvariant.t.sol`.
+- Added invariant-style validation for `MerkleClaimer` in `test/gas_pack/MerkleClaimerInvariant.t.sol`.
 - Documented the meaningful-result bar and narrow-arena discipline.
+- Added a broader-success roadmap to `task.md`.
 
 Best V2 Result So Far:
 - Target: `TokenLedger`
@@ -44,26 +47,46 @@ V2 Attempt History:
 - `be71b13` - discard - `unchecked mintBatch loop increment`
 - `ee43f7a` - keep - `load mintBatch inputs from calldata`
 - `9261f83` - discard - `add single-mint fast path`
+- `ffa7fae` - keep - `baseline RewardDistributor gas_pack v2`
+- `c26833e` - discard - `cache reward accumulator in setShares`
+- `e590b35` - discard - `unchecked setShares loop increment`
+- `11f5a1f` - keep - `baseline MerkleClaimer gas_pack v2`
+- `71852b2` - discard - `unchecked merkle proof loop increment`
+
+Cross-Contract Status:
+- `TokenLedger`
+  - baseline: `835526`
+  - best kept: `813699`
+  - outcome: beat current repository manual baseline
+- `RewardDistributor`
+  - baseline: `887232`
+  - best kept: `887232`
+  - outcome: flat so far
+- `MerkleClaimer`
+  - baseline: `250228`
+  - best kept: `250228`
+  - outcome: flat so far
 
 What The Current State Proves:
-- The repo can run a realistic V2 gas-pack loop on one selected contract.
-- The repo can keep or discard changes against a fixed local benchmark.
-- The repo can enforce stronger validation than V1 for `TokenLedger`, including an invariant-style harness.
+- The repo can run a realistic V2 gas-pack loop on multiple selected contracts.
+- The repo can keep or discard changes against fixed local benchmarks.
+- The repo can enforce stronger validation than V1 for all three current gas-pack contracts through invariant-style harnesses.
 - The repo has at least one real V2 gas win on a more realistic contract pattern than the V1 toy arena.
+- The repo can now report honest flat results instead of only reporting winners.
 
 What It Does Not Yet Prove:
-- Broad success across multiple realistic contract patterns.
-- Wins over explicit manual baselines.
+- Broad success across realistic contract patterns.
+- Wins over stronger manual baselines beyond the repository reference implementations.
 - A generally reliable autonomous blockchain optimizer.
 
 Known Gaps:
-- `RewardDistributor` and `MerkleClaimer` do not yet have comparable invariant coverage.
-- No explicit manual baseline comparison has been recorded yet.
-- Only `TokenLedger` has completed a V2 search pass so far.
+- Only `TokenLedger` has a kept improvement so far.
+- The current manual baseline policy is still repo-internal rather than an external expert comparator.
+- A broader-success decision has not yet been written into the main docs.
 - The worktree still has unrelated `.gitignore` changes and generated snapshot files that were intentionally left out of commits.
 
 Next Best Steps:
-- Run a first V2 search pass on `RewardDistributor`.
-- Add invariant-style validation for `RewardDistributor`.
-- Define and beat an explicit manual baseline for at least one V2 contract.
-- After multiple V2 contracts are validated, revisit whether V3 should expand toward security or invariant discovery.
+- Keep the broader-success decision at "not yet" until more than one realistic contract pattern shows a kept win.
+- Define what extra evidence is needed beyond the current one-winner-two-flat result spread.
+- Define stronger manual comparators beyond the current repository baseline policy.
+- After that decision, revisit whether V3 should expand toward security or invariant discovery.

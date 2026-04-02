@@ -121,6 +121,48 @@ The next work needed for a stronger claim is:
 - add invariant-style validation beyond `TokenLedger`
 - define and beat explicit manual baselines for at least one realistic contract
 
+## Manual Baseline Policy
+
+For the current gas-pack phase, an "obvious manual baseline" means:
+
+- the first validated, readability-first implementation kept for a given contract
+- measured under the same fixed benchmark and validation surface as later optimized candidates
+- treated as the manual reference point unless and until the repo defines a stronger external manual comparator
+
+This is a practical repository baseline policy, not a claim that the baseline is a globally expert implementation.
+
+Current manual baselines are:
+
+- `TokenLedger`: commit `5520615`, `median_gas = 835526`
+- `RewardDistributor`: commit `ffa7fae`, `median_gas = 887232`
+- `MerkleClaimer`: commit `11f5a1f`, `median_gas = 250228`
+
+## Cross-Contract Evidence
+
+Current fixed-pack evidence looks like this:
+
+- `TokenLedger`
+  - best kept result: `813699`
+  - baseline: `835526`
+  - outcome: beat the current manual baseline
+- `RewardDistributor`
+  - best kept result: `887232`
+  - baseline: `887232`
+  - outcome: no improvement yet
+- `MerkleClaimer`
+  - best kept result: `250228`
+  - baseline: `250228`
+  - outcome: no improvement yet
+
+This means the repo now has:
+
+- multi-contract validation coverage across the initial gas-pack
+- multi-contract baseline coverage across the initial gas-pack
+- one contract with a kept gas win
+- two contracts with honest flat first passes
+
+That is better evidence than a single winning example, but it is still not broad success.
+
 ## Arena Model
 
 The repo should still preserve the same core autoresearch model:

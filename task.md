@@ -317,30 +317,76 @@ Current `MerkleClaimer` search-pass summary:
 
 ### 12.3 Manual baseline comparison
 
-- [ ] Define what counts as an "obvious manual baseline" for `TokenLedger`.
-- [ ] Define what counts as an "obvious manual baseline" for `RewardDistributor`.
-- [ ] Define what counts as an "obvious manual baseline" for `MerkleClaimer`.
-- [ ] Record whether the best kept V2 versions beat those manual baselines on fixed local benchmarks.
-- [ ] Reflect those comparisons in the docs without overstating what the evidence proves.
+- [x] Define what counts as an "obvious manual baseline" for `TokenLedger`.
+- [x] Define what counts as an "obvious manual baseline" for `RewardDistributor`.
+- [x] Define what counts as an "obvious manual baseline" for `MerkleClaimer`.
+- [x] Record whether the best kept V2 versions beat those manual baselines on fixed local benchmarks.
+- [x] Reflect those comparisons in the docs without overstating what the evidence proves.
+
+Current manual baseline policy:
+
+- use the first validated, readability-first kept implementation for each contract as the current repository manual baseline
+- compare later candidates only under the same fixed benchmark and validation surface
+- treat this as a practical repo baseline, not as proof of superiority over an expert external implementation
+
+Current manual baseline outcomes:
+
+- `TokenLedger`
+  - baseline: `835526`
+  - best kept: `813699`
+  - outcome: beat baseline
+- `RewardDistributor`
+  - baseline: `887232`
+  - best kept: `887232`
+  - outcome: flat
+- `MerkleClaimer`
+  - baseline: `250228`
+  - best kept: `250228`
+  - outcome: flat
 
 ### 12.4 Cross-contract evidence
 
-- [ ] Summarize the best kept result for each current gas-pack contract in one place.
-- [ ] Show that wins are not confined to a single cherry-picked target.
-- [ ] Note where one contract failed to improve or stayed flat if that happens.
-- [ ] Keep the benchmark and validation surfaces fixed while making the comparison.
-- [ ] Avoid introducing new contract patterns until the current pack has been evaluated honestly.
+- [x] Summarize the best kept result for each current gas-pack contract in one place.
+- [x] Show that wins are not confined to a single cherry-picked target.
+- [x] Note where one contract failed to improve or stayed flat if that happens.
+- [x] Keep the benchmark and validation surfaces fixed while making the comparison.
+- [x] Avoid introducing new contract patterns until the current pack has been evaluated honestly.
+
+Current cross-contract evidence summary:
+
+- all three initial gas-pack contracts now have:
+  - correctness tests
+  - invariant-style validation
+  - fixed benchmark coverage
+  - recorded baselines
+  - at least one completed search pass
+- result spread:
+  - `TokenLedger` improved
+  - `RewardDistributor` stayed flat in its first pass
+  - `MerkleClaimer` stayed flat in its first pass
+- interpretation:
+  - the repo no longer relies on one cherry-picked target for all evidence
+  - the evidence is broader than before, but not yet broad success
 
 ### 12.5 Broader-success decision
 
-- [ ] Decide whether the repo now has enough evidence to claim broader success across realistic contract patterns.
-- [ ] If yes, update `scope.md`, `README.md`, and `context.md` with the stronger claim boundary.
-- [ ] If no, state exactly what evidence is still missing.
-- [ ] Record the next most valuable addition after the current contract pack is fully evaluated.
+- [x] Decide whether the repo now has enough evidence to claim broader success across realistic contract patterns.
+- [x] If yes, update `scope.md`, `README.md`, and `context.md` with the stronger claim boundary.
+- [x] If no, state exactly what evidence is still missing.
+- [x] Record the next most valuable addition after the current contract pack is fully evaluated.
 
 Current broader-success gap:
 
-- only `TokenLedger` has completed a V2 search pass
-- only `TokenLedger` has invariant-style validation
-- no explicit manual baseline comparisons have been recorded yet
-- no multi-contract evidence summary exists yet
+- only one of the three current contract patterns has a kept improvement so far
+- the current manual baseline policy is still repo-internal rather than an external expert comparator
+- the broader-success decision has not yet been written into the docs
+
+Current broader-success decision:
+
+- decision: not yet justified
+- reason:
+  - `TokenLedger` improved, but `RewardDistributor` and `MerkleClaimer` were flat in their first passes
+  - the current baseline policy is still internal to the repo
+  - stronger evidence is still needed before claiming broad success across realistic contract patterns
+- next most valuable addition:
+  - define stronger manual comparators and then run a deeper second-pass search on the flattest contracts, starting with `RewardDistributor`
