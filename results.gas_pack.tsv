@@ -9,3 +9,4 @@ e590b35	887232	discard	unchecked setShares loop increment
 11f5a1f	250228	keep	baseline MerkleClaimer gas_pack v2
 71852b2	250228	discard	unchecked merkle proof loop increment
 fea6933	898693	discard	inline reward claim accrual path
+0d8f59f	862368	keep	specialize setShares zero-accrual path

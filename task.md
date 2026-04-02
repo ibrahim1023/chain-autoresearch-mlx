@@ -277,15 +277,17 @@ Current `RewardDistributor` search-pass summary:
 
 - baseline start: `887232`
 - kept improvements:
-  - none yet
+  - `0d8f59f` - `specialize setShares zero-accrual path`
+  - improved `median_gas`: `862368`
 - discarded attempts:
   - `c26833e` - `cache reward accumulator in setShares`
   - `e590b35` - `unchecked setShares loop increment`
+  - `fea6933` - `inline reward claim accrual path`
 - current kept RewardDistributor state:
-  - restored to the validated baseline after discards
+  - current kept branch state includes the specialized zero-accrual `setShares` path
 - interpretation:
-  - the current local frontier is flat for the low-risk `setShares` ideas tried so far
-  - a stronger next attempt would likely need a more structural accounting change rather than micro loop cleanup alone
+  - `RewardDistributor` is no longer flat overall
+  - the kept win came from a benchmark-aware structural change rather than a micro loop cleanup
 
 ### 12.2 MerkleClaimer tranche
 
@@ -426,6 +428,8 @@ Current second-pass `RewardDistributor` note:
   - `fea6933` - `inline reward claim accrual path`
 - outcome:
   - discarded, worse than the current validated baseline
+  - `0d8f59f` - `specialize setShares zero-accrual path`
+  - kept, improved on both `RewardDistributor` benchmark cases
 
 ### 13.3 MerkleClaimer second-pass search
 
