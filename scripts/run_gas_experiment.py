@@ -20,6 +20,7 @@ class ArenaConfig:
     arena: str
     target: str | None
     test_cmd: list[str]
+    invariant_cmd: list[str] | None
     snapshot_cmd: list[str]
     benchmark_contract: str
     metric_prefix: str
@@ -54,6 +55,7 @@ def resolve_arena_config(arena: str, target: str | None) -> ArenaConfig:
             arena="v1",
             target=None,
             test_cmd=["forge", "test", "--match-contract", "GasCandidateTest"],
+            invariant_cmd=None,
             snapshot_cmd=[
                 "forge",
                 "snapshot",
@@ -84,6 +86,11 @@ def resolve_arena_config(arena: str, target: str | None) -> ArenaConfig:
         arena="gas_pack",
         target=target,
         test_cmd=["forge", "test", "--match-path", target_to_test_path[target]],
+        invariant_cmd=(
+            ["forge", "test", "--match-path", "test/gas_pack/TokenLedgerInvariant.t.sol"]
+            if target == "TokenLedger"
+            else None
+        ),
         snapshot_cmd=[
             "forge",
             "snapshot",
@@ -225,6 +232,19 @@ def main() -> int:
         if args.append_results:
             append_result(results_path, commit, 0, "crash", args.description)
         return test_step.returncode
+
+    if config.invariant_cmd is not None:
+        invariant_step = run_step("forge_invariant", config.invariant_cmd, args.test_timeout_seconds)
+        if invariant_step.returncode != 0:
+            print_step_output(invariant_step)
+            print("---")
+            print("status: crash")
+            print(f"arena: {config.arena}")
+            print(f"target: {config.target or 'GasCandidate'}")
+            print("reason: invariant_timeout" if invariant_step.timed_out else "reason: invariant_failure")
+            if args.append_results:
+                append_result(results_path, commit, 0, "crash", args.description)
+            return invariant_step.returncode
 
     benchmark_step = run_step("gas_benchmark", config.snapshot_cmd, args.benchmark_timeout_seconds)
     if benchmark_step.returncode != 0:

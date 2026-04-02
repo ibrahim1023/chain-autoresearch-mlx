@@ -166,12 +166,20 @@ Current first V2 search-pass summary:
 
 ## 8. Strengthen Validation
 
-- [ ] Add invariant checks for at least one V2 contract.
-- [ ] Make invariant success a required condition for valid optimization claims.
-- [ ] Ensure failures are surfaced clearly in the runner output.
-- [ ] Prevent "gas wins" that only come from weakening correctness.
+- [x] Add invariant checks for at least one V2 contract.
+- [x] Make invariant success a required condition for valid optimization claims.
+- [x] Ensure failures are surfaced clearly in the runner output.
+- [x] Prevent "gas wins" that only come from weakening correctness.
 
 This phase is what should make V2 more defensible than V1.
+
+Current invariant coverage:
+
+- `TokenLedger` now has a dedicated invariant-style harness in `test/gas_pack/TokenLedgerInvariant.t.sol`
+- the runner executes that invariant step for `--arena gas_pack --target TokenLedger`
+- invariant failure is surfaced as `reason: invariant_failure`
+- invariant timeout is surfaced as `reason: invariant_timeout`
+- `RewardDistributor` and `MerkleClaimer` still need comparable invariant coverage later
 
 ## 9. Keep The Arena Narrow
 
