@@ -259,11 +259,19 @@ The point is to show that the same disciplined loop works repeatedly on differen
 
 ### 12.1 RewardDistributor tranche
 
-- [ ] Add invariant-style validation for `RewardDistributor`.
-- [ ] Ensure the runner treats that invariant step as required for valid `RewardDistributor` optimization claims.
-- [ ] Record the first `RewardDistributor` baseline in `results.gas_pack.tsv` or a clearly documented successor log.
+- [x] Add invariant-style validation for `RewardDistributor`.
+- [x] Ensure the runner treats that invariant step as required for valid `RewardDistributor` optimization claims.
+- [x] Record the first `RewardDistributor` baseline in `results.gas_pack.tsv` or a clearly documented successor log.
 - [ ] Run a disciplined keep-or-discard search pass on `RewardDistributor`.
 - [ ] Leave the branch at the best kept `RewardDistributor` state reached so far.
+
+Current `RewardDistributor` baseline:
+
+- baseline commit: `ffa7fae`
+- baseline `median_gas`: `887232`
+- per-case benchmark gas:
+  - `testGasRewardDistributorClaimAfterDeposit16`: `931288`
+  - `testGasRewardDistributorSetShares16`: `843177`
 
 ### 12.2 MerkleClaimer tranche
 
