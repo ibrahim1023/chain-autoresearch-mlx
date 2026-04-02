@@ -116,9 +116,9 @@ The repo should not yet claim:
 
 The next work needed for a stronger claim is:
 
-- define and benchmark stronger manual comparators beyond the current repository baseline policy
-- expand the pack or repeat the result on additional realistic contract patterns
-- show that the wins remain credible against a stronger comparison bar
+- improve the remaining contract patterns that do not yet beat frozen stronger manual comparators
+- then expand the pack or repeat the result on additional realistic contract patterns
+- show that the wins remain credible against a stronger comparison bar across the whole pack
 
 ## Manual Baseline Policy
 
@@ -162,10 +162,7 @@ These stronger comparators differ from the repository baseline policy because th
 - hotspot-aware structure rather than merely readability-first code
 - explicit comparison against a more competent manual implementation style
 
-The repo still lacks direct evidence against those stronger comparators because:
-
-- no separate stronger-comparator implementations have been frozen and benchmarked yet
-- current wins only beat the repository's first validated drafts
+The repo now has direct evidence against those stronger comparators through frozen sibling implementations and a separate fixed comparator benchmark suite.
 
 ## Cross-Contract Evidence
 
@@ -175,24 +172,31 @@ Current fixed-pack evidence looks like this:
   - best kept result: `813699`
   - baseline: `835526`
   - outcome: beat the current manual baseline
+  - stronger comparator: `831827`
+  - stronger-comparator outcome: beat stronger comparator
 - `RewardDistributor`
   - best kept result: `862368`
   - baseline: `887232`
   - outcome: beat the current manual baseline
+  - stronger comparator: `894867`
+  - stronger-comparator outcome: beat stronger comparator
 - `MerkleClaimer`
   - best kept result: `245771`
   - baseline: `250228`
   - outcome: beat the current manual baseline
+  - stronger comparator: `236456`
+  - stronger-comparator outcome: did not beat stronger comparator
 
 This means the repo now has:
 
 - multi-contract validation coverage across the initial gas-pack
 - multi-contract baseline coverage across the initial gas-pack
 - three contracts with kept gas wins
+- two of three current targets beating frozen stronger manual comparators
 
 That is enough to support a narrower claim of broad success across the current initial gas-pack contract patterns.
 
-It is still not enough to support a stronger claim of superiority over stronger manual comparators or of a generally reliable autonomous blockchain optimizer.
+It is still not enough to support a stronger claim of superiority over stronger manual comparators across the full pack or of a generally reliable autonomous blockchain optimizer.
 
 ## Arena Model
 

@@ -119,8 +119,7 @@ This means the repo now has broad success across the current initial gas-pack co
 
 What it still does not prove:
 
-- explicit stronger manual comparators beyond the repository baselines are not yet defined
-- superiority over those stronger manual comparators
+- superiority over stronger manual comparators across the full pack
 - a generally reliable autonomous blockchain optimizer outside the current fixed pack
 
 Current decision:
@@ -137,7 +136,11 @@ For each contract, the repo now treats the stronger comparison target as a plaus
 - `RewardDistributor`: human-specialized zero-accrual setup and claim-path accounting
 - `MerkleClaimer`: human-specialized proof traversal and claim-state handling
 
-The repo does not yet have direct benchmark evidence against those stronger comparators.
+The repo now has direct benchmark evidence against frozen stronger manual comparators:
+
+- `TokenLedger`: current kept `813699`, stronger comparator `831827`, current kept wins
+- `RewardDistributor`: current kept `862368`, stronger comparator `894867`, current kept wins
+- `MerkleClaimer`: current kept `245771`, stronger comparator `236456`, stronger comparator wins
 
 So the current wins should still be read as:
 
@@ -145,7 +148,7 @@ So the current wins should still be read as:
 
 not yet:
 
-- beat a stronger human gas-aware implementation
+- beat a stronger human gas-aware implementation across the full current gas pack
 
 ## Repository Anchors
 

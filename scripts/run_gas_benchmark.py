@@ -19,6 +19,7 @@ class ArenaConfig:
     target_name: str
     arena_name: str
     snapshot_path: pathlib.Path
+    benchmark_suite: str
 
 
 @dataclass(frozen=True)
@@ -32,10 +33,12 @@ class GasMetric:
         return f"{self.contract}:{self.test_name}"
 
 
-def resolve_arena_config(arena: str, target: str | None) -> ArenaConfig:
+def resolve_arena_config(arena: str, target: str | None, benchmark_suite: str) -> ArenaConfig:
     if arena == "v1":
         if target is not None:
             raise ValueError("v1 does not accept --target")
+        if benchmark_suite != "current":
+            raise ValueError("v1 only supports --benchmark-suite current")
         return ArenaConfig(
             benchmark_contract="GasBenchmarkTest",
             snapshot_cmd=[
@@ -51,26 +54,34 @@ def resolve_arena_config(arena: str, target: str | None) -> ArenaConfig:
             target_name="GasCandidate",
             arena_name="v1",
             snapshot_path=pathlib.Path(".gas-snapshot.v1.current"),
+            benchmark_suite="current",
         )
 
     if target is None:
         raise ValueError("gas_pack requires --target")
 
+    benchmark_contract = "GasPackBenchmarkTest"
+    snapshot_path = pathlib.Path(".gas-snapshot.gas_pack.current")
+    if benchmark_suite == "manual":
+        benchmark_contract = "GasPackManualComparatorBenchmarkTest"
+        snapshot_path = pathlib.Path(".gas-snapshot.gas_pack.manual.current")
+
     return ArenaConfig(
-        benchmark_contract="GasPackBenchmarkTest",
+        benchmark_contract=benchmark_contract,
         snapshot_cmd=[
             "forge",
             "snapshot",
             "--offline",
             "--match-contract",
-            "GasPackBenchmarkTest",
+            benchmark_contract,
             "--snap",
-            ".gas-snapshot.gas_pack.current",
+            str(snapshot_path),
         ],
         metric_prefix=f"testGas{target}",
         target_name=target,
         arena_name="gas_pack",
-        snapshot_path=pathlib.Path(".gas-snapshot.gas_pack.current"),
+        snapshot_path=snapshot_path,
+        benchmark_suite=benchmark_suite,
     )
 
 
@@ -102,10 +113,11 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--arena", choices=["v1", "gas_pack"], default="v1")
     parser.add_argument("--target", choices=["TokenLedger", "RewardDistributor", "MerkleClaimer"])
+    parser.add_argument("--benchmark-suite", choices=["current", "manual"], default="current")
     args = parser.parse_args()
 
     try:
-        config = resolve_arena_config(args.arena, args.target)
+        config = resolve_arena_config(args.arena, args.target, args.benchmark_suite)
     except ValueError as exc:
         parser.error(str(exc))
 
@@ -132,6 +144,7 @@ def main() -> int:
     print(f"arena: {config.arena_name}")
     print(f"target: {config.target_name}")
     print(f"benchmark_contract: {config.benchmark_contract}")
+    print(f"benchmark_suite: {config.benchmark_suite}")
     print(f"metric_count: {len(metrics)}")
     for metric in metrics:
         print(f"{metric.case_name}: {metric.gas}")

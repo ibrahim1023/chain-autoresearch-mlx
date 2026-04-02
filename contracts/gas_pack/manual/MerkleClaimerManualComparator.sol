@@ -1,0 +1,46 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract MerkleClaimerManualComparator {
+    error InvalidProof();
+    error NothingToClaim();
+
+    bytes32 public immutable merkleRoot;
+    mapping(address => uint256) public claimedAmount;
+
+    constructor(bytes32 root) {
+        merkleRoot = root;
+    }
+
+    function claim(address account, uint256 totalEntitlement, bytes32[] calldata proof)
+        external
+        returns (uint256 newlyClaimed)
+    {
+        bytes32 computed = keccak256(abi.encode(account, totalEntitlement));
+        bytes32 root = merkleRoot;
+        uint256 length = proof.length;
+
+        for (uint256 i = 0; i < length;) {
+            bytes32 sibling = proof[i];
+            if (computed <= sibling) {
+                computed = keccak256(abi.encodePacked(computed, sibling));
+            } else {
+                computed = keccak256(abi.encodePacked(sibling, computed));
+            }
+
+            unchecked {
+                ++i;
+            }
+        }
+
+        if (computed != root) revert InvalidProof();
+
+        uint256 alreadyClaimed = claimedAmount[account];
+        if (alreadyClaimed >= totalEntitlement) revert NothingToClaim();
+
+        unchecked {
+            newlyClaimed = totalEntitlement - alreadyClaimed;
+        }
+        claimedAmount[account] = totalEntitlement;
+    }
+}

@@ -426,8 +426,8 @@ Current stronger comparator definitions:
 
 Current stronger-comparator evidence gap:
 
-- the repo has not yet frozen separate stronger manual comparator implementations and benchmarked them directly
-- current wins still only beat the repository baseline policy, not those stronger explicit comparators
+- the repo has not yet shown a clean sweep against frozen stronger manual comparators across all three current contracts
+- the current stronger-comparator sweep is incomplete because `MerkleClaimer` still trails its frozen comparator
 
 ### 13.2 RewardDistributor second-pass search
 
@@ -461,6 +461,60 @@ Current `MerkleClaimer` second-pass decision:
 - second-pass outcome:
   - `fedb18f` - `inline merkle verification into claim`
   - kept, improved the `MerkleClaimer` benchmark from `250228` to `245771`
-- second-pass outcome:
-  - `fedb18f` - `inline merkle verification into claim`
-  - kept, improved the `MerkleClaimer` benchmark from `250228` to `245771`
+
+### 13.4 Freeze and benchmark stronger manual comparators
+
+- [x] Freeze an explicit stronger manual comparator implementation for `TokenLedger`.
+- [x] Freeze an explicit stronger manual comparator implementation for `RewardDistributor`.
+- [x] Freeze an explicit stronger manual comparator implementation for `MerkleClaimer`.
+- [x] Validate those comparator contracts under the same correctness and invariant-style surface.
+- [x] Benchmark those comparator contracts under the same fixed gas-pack benchmark cases.
+- [x] Record whether the current kept contracts beat those stronger comparators.
+
+Current frozen stronger comparator artifacts:
+
+- contracts:
+  - `contracts/gas_pack/manual/TokenLedgerManualComparator.sol`
+  - `contracts/gas_pack/manual/RewardDistributorManualComparator.sol`
+  - `contracts/gas_pack/manual/MerkleClaimerManualComparator.sol`
+- correctness tests:
+  - `test/gas_pack/TokenLedgerManualComparator.t.sol`
+  - `test/gas_pack/RewardDistributorManualComparator.t.sol`
+  - `test/gas_pack/MerkleClaimerManualComparator.t.sol`
+- invariant-style tests:
+  - `test/gas_pack/TokenLedgerManualComparatorInvariant.t.sol`
+  - `test/gas_pack/RewardDistributorManualComparatorInvariant.t.sol`
+  - `test/gas_pack/MerkleClaimerManualComparatorInvariant.t.sol`
+- benchmark surface:
+  - `test/gas_pack/GasPackManualComparatorBenchmark.t.sol`
+  - `python scripts/run_gas_benchmark.py --arena gas_pack --target <Target> --benchmark-suite manual`
+
+Current stronger-comparator outcomes:
+
+- `TokenLedger`
+  - current kept: `813699`
+  - stronger manual comparator: `831827`
+  - outcome: current kept contract beat the frozen stronger comparator
+- `RewardDistributor`
+  - current kept: `862368`
+  - stronger manual comparator: `894867`
+  - outcome: current kept contract beat the frozen stronger comparator
+- `MerkleClaimer`
+  - current kept: `245771`
+  - stronger manual comparator: `236456`
+  - outcome: frozen stronger comparator beat the current kept contract
+
+### 13.5 Stronger-comparator decision
+
+- [x] Decide whether the repo now has enough evidence to claim success against stronger manual comparators across the current gas pack.
+- [x] If not, state exactly which contract still fails that stronger bar.
+- [x] Record the next most valuable search target under the stronger-comparator standard.
+
+Current stronger-comparator decision:
+
+- decision: not yet justified across the full current gas pack
+- reason:
+  - `TokenLedger` and `RewardDistributor` beat their frozen stronger manual comparators
+  - `MerkleClaimer` does not; the frozen stronger comparator remains better on the fixed benchmark
+- next most valuable search target:
+  - `MerkleClaimer`, now judged against the explicit stronger comparator rather than only the repository baseline
