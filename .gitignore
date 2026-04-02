@@ -4,6 +4,15 @@ __pycache__/
 *.pyc
 *.log
 run.log
+.gas-snapshot.current
+.gas-snapshot.*
+cache/
+out/
+broadcast/
 surfaces.txt
 surface-verify-prompt.md
 build-2-closeout.md
+
+AGENTS.md
+scope.md
+task.md

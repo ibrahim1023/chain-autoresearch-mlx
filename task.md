@@ -183,23 +183,122 @@ Current invariant coverage:
 
 ## 9. Keep The Arena Narrow
 
-- [ ] Keep one editable target per search pass.
-- [ ] Avoid turning the V2 pack into a generic framework too early.
-- [ ] Do not mix security, strategy, and protocol research into the V2 gas-pack loop.
-- [ ] Keep local execution deterministic and offline.
-- [ ] Keep the implementation understandable enough that further arenas can reuse the same pattern.
+- [x] Keep one editable target per search pass.
+- [x] Avoid turning the V2 pack into a generic framework too early.
+- [x] Do not mix security, strategy, and protocol research into the V2 gas-pack loop.
+- [x] Keep local execution deterministic and offline.
+- [x] Keep the implementation understandable enough that further arenas can reuse the same pattern.
+
+Current phase 9 discipline:
+
+- V2 search passes currently target one contract at a time
+- benchmark execution remains local and offline
+- the runner is still arena-specific rather than generic multi-research infrastructure
+- the repo has not mixed gas-pack work with security or strategy research loops
 
 ## 10. Define What Counts As Meaningful
 
-- [ ] State the bar for a meaningful V2 result in the docs.
-- [ ] Require V2 to beat obvious manual baselines on realistic patterns before stronger claims are made.
-- [ ] Distinguish clearly between "working infrastructure" and "meaningful blockchain research result."
-- [ ] Capture the strongest open question for V3 after the first V2 pass is complete.
+- [x] State the bar for a meaningful V2 result in the docs.
+- [x] Require V2 to beat obvious manual baselines on realistic patterns before stronger claims are made.
+- [x] Distinguish clearly between "working infrastructure" and "meaningful blockchain research result."
+- [x] Capture the strongest open question for V3 after the first V2 pass is complete.
+
+Current phase 10 definition:
+
+- current honest repo state:
+  - working V2 infrastructure with early promising results
+- not yet justified:
+  - broad autonomous blockchain research success claims
+- strongest current V3-facing open question:
+  - after gas-pack validation across multiple realistic contracts, should the next arena expand toward security or invariant discovery rather than more gas patterns
 
 ## 11. V2 Wrap-Up
 
-- [ ] Leave the branch at the best kept V2 state reached so far.
-- [ ] Ensure the V2 results log reflects all completed attempts.
-- [ ] Summarize the best V2 result and what it does or does not prove.
-- [ ] Record the next strongest contract or arena to add.
-- [ ] Suggest a commit message after substantial work.
+- [x] Leave the branch at the best kept V2 state reached so far.
+- [x] Ensure the V2 results log reflects all completed attempts.
+- [x] Summarize the best V2 result and what it does or does not prove.
+- [x] Record the next strongest contract or arena to add.
+- [x] Suggest a commit message after substantial work.
+
+Current phase 11 wrap-up:
+
+- current branch head:
+  - `1d81d05`
+- best kept V2 optimization commit:
+  - `ee43f7a`
+- best kept V2 result:
+  - target: `TokenLedger`
+  - best `median_gas`: `813699`
+  - baseline `median_gas`: `835526`
+  - net improvement: `21827`
+- what this proves:
+  - the repo has a working V2 gas-pack loop with a real kept improvement on a more realistic contract pattern than V1
+  - stronger validation now exists for that target through invariant-style checking
+- what this does not prove:
+  - broad success across realistic contract patterns
+  - superiority over explicit manual baselines
+  - a generally reliable autonomous blockchain research system
+- next strongest contract to add or search:
+  - `RewardDistributor`
+- suggested tranche commit message:
+  - `feat: complete initial gas_pack v2 tranche`
+
+## 12. Achieve Broader Success Across Realistic Contract Patterns
+
+This phase is the bridge between:
+
+- working V2 infrastructure with early promising results
+
+and:
+
+- a more defensible claim of broader success across realistic contract patterns
+
+The point is not to add many more contracts blindly.
+
+The point is to show that the same disciplined loop works repeatedly on different realistic smart-contract patterns under comparable validation.
+
+### 12.1 RewardDistributor tranche
+
+- [ ] Add invariant-style validation for `RewardDistributor`.
+- [ ] Ensure the runner treats that invariant step as required for valid `RewardDistributor` optimization claims.
+- [ ] Record the first `RewardDistributor` baseline in `results.gas_pack.tsv` or a clearly documented successor log.
+- [ ] Run a disciplined keep-or-discard search pass on `RewardDistributor`.
+- [ ] Leave the branch at the best kept `RewardDistributor` state reached so far.
+
+### 12.2 MerkleClaimer tranche
+
+- [ ] Add invariant-style validation for `MerkleClaimer`.
+- [ ] Ensure the runner treats that invariant step as required for valid `MerkleClaimer` optimization claims.
+- [ ] Record the first `MerkleClaimer` baseline in `results.gas_pack.tsv` or a clearly documented successor log.
+- [ ] Run a disciplined keep-or-discard search pass on `MerkleClaimer`.
+- [ ] Leave the branch at the best kept `MerkleClaimer` state reached so far.
+
+### 12.3 Manual baseline comparison
+
+- [ ] Define what counts as an "obvious manual baseline" for `TokenLedger`.
+- [ ] Define what counts as an "obvious manual baseline" for `RewardDistributor`.
+- [ ] Define what counts as an "obvious manual baseline" for `MerkleClaimer`.
+- [ ] Record whether the best kept V2 versions beat those manual baselines on fixed local benchmarks.
+- [ ] Reflect those comparisons in the docs without overstating what the evidence proves.
+
+### 12.4 Cross-contract evidence
+
+- [ ] Summarize the best kept result for each current gas-pack contract in one place.
+- [ ] Show that wins are not confined to a single cherry-picked target.
+- [ ] Note where one contract failed to improve or stayed flat if that happens.
+- [ ] Keep the benchmark and validation surfaces fixed while making the comparison.
+- [ ] Avoid introducing new contract patterns until the current pack has been evaluated honestly.
+
+### 12.5 Broader-success decision
+
+- [ ] Decide whether the repo now has enough evidence to claim broader success across realistic contract patterns.
+- [ ] If yes, update `scope.md`, `README.md`, and `context.md` with the stronger claim boundary.
+- [ ] If no, state exactly what evidence is still missing.
+- [ ] Record the next most valuable addition after the current contract pack is fully evaluated.
+
+Current broader-success gap:
+
+- only `TokenLedger` has completed a V2 search pass
+- only `TokenLedger` has invariant-style validation
+- no explicit manual baseline comparisons have been recorded yet
+- no multi-contract evidence summary exists yet

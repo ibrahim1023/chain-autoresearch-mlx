@@ -164,6 +164,9 @@ Crash a candidate when:
 - Keep the runner simpler than the arena it orchestrates.
 - Avoid broad framework rewrites when a narrow harness extension is enough.
 - Do not treat V2 as complete before there is a real baseline.
+- Keep one editable target per search pass.
+- Do not mix gas, security, protocol, or strategy research in the same V2 loop.
+- Do not widen the normal V2 path into a multi-file optimization framework.
 
 ## Current Best
 

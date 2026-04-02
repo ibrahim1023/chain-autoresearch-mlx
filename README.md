@@ -74,6 +74,35 @@ Recommended initial contract set:
 
 The goal is still to keep the research loop narrow. Even within a pack, each search pass should edit only one contract at a time.
 
+## What V2 Currently Proves
+
+Today the repo can honestly claim:
+
+- a working V2 `gas_pack` harness exists
+- `TokenLedger` has a real baseline and a completed keep-or-discard search pass
+- the best kept `TokenLedger` result improved `median_gas` from `835526` to `813699`
+- `TokenLedger` now has invariant-style validation in addition to correctness tests
+
+That is stronger than V1, but it is still not the final research bar.
+
+## What Would Count As Meaningful
+
+A meaningful V2 result should show:
+
+- gas improvements on realistic contract patterns
+- invariant-preserving correctness
+- fixed benchmark and validation surfaces during the search
+- wins that beat obvious manual baselines
+- evidence across more than one realistic contract pattern
+
+Until then, the right description is:
+
+- working V2 infrastructure with early promising results
+
+not:
+
+- proven autonomous blockchain research
+
 ## Repository Anchors
 
 - `scope.md`: source of truth for project direction
