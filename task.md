@@ -308,14 +308,15 @@ Current `MerkleClaimer` search-pass summary:
 
 - baseline start: `250228`
 - kept improvements:
-  - none yet
+  - `fedb18f` - `inline merkle verification into claim`
+  - improved `median_gas`: `245771`
 - discarded attempts:
   - `71852b2` - `unchecked merkle proof loop increment`
 - current kept MerkleClaimer state:
-  - restored to the validated baseline after discards
+  - current kept branch state inlines proof verification into `claim`
 - interpretation:
-  - the current local frontier is flat for the simplest proof-loop cleanup tried so far
-  - a stronger next attempt would likely need a more structural proof-verification or claim-state change, not another cosmetic loop tweak
+  - `MerkleClaimer` is no longer flat overall
+  - the kept win came from a structural claim-path change rather than a cosmetic loop tweak
 
 ### 12.3 Manual baseline comparison
 
@@ -448,8 +449,8 @@ Current second-pass `RewardDistributor` note:
 ### 13.3 MerkleClaimer second-pass search
 
 - [x] Decide whether `MerkleClaimer` deserves a deeper second pass now or should wait until stronger comparators are defined.
-- [ ] If it gets a second pass, try at least one structural proof-verification or claim-state idea.
-- [ ] Record whether that deeper pass remains flat or finds a kept win.
+- [x] If it gets a second pass, try at least one structural proof-verification or claim-state idea.
+- [x] Record whether that deeper pass remains flat or finds a kept win.
 
 Current `MerkleClaimer` second-pass decision:
 
@@ -458,3 +459,6 @@ Current `MerkleClaimer` second-pass decision:
   - stronger comparator expectations are now documented
   - `MerkleClaimer` is the only current gas-pack contract still flat
   - the next credibility gain comes from either finding a kept `MerkleClaimer` win or demonstrating that even deeper ideas stay flat
+- second-pass outcome:
+  - `fedb18f` - `inline merkle verification into claim`
+  - kept, improved the `MerkleClaimer` benchmark from `250228` to `245771`
