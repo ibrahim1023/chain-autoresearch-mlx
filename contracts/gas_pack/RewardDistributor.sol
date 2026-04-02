@@ -54,10 +54,17 @@ contract RewardDistributor {
     }
 
     function claim(address account) external returns (uint256 payout) {
-        payout = pendingReward(account);
+        uint256 shareAmount = shares[account];
+        uint256 accrued = _accruedReward(shareAmount);
+        uint256 debt = rewardDebt[account];
+        if (accrued <= debt) revert NothingToClaim();
+
+        unchecked {
+            payout = accrued - debt;
+        }
         if (payout == 0) revert NothingToClaim();
 
-        rewardDebt[account] += payout;
+        rewardDebt[account] = accrued;
         claimedRewards[account] += payout;
     }
 
