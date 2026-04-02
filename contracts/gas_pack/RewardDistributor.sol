@@ -20,7 +20,7 @@ contract RewardDistributor {
         uint256 length = accounts.length;
         if (length != newShares.length) revert LengthMismatch();
 
-        for (uint256 i = 0; i < length; ++i) {
+        for (uint256 i = 0; i < length;) {
             address account = accounts[i];
             uint256 oldShare = shares[account];
             uint256 nextShare = newShares[i];
@@ -33,6 +33,10 @@ contract RewardDistributor {
 
             shares[account] = nextShare;
             rewardDebt[account] = _accruedReward(nextShare);
+
+            unchecked {
+                ++i;
+            }
         }
     }
 
