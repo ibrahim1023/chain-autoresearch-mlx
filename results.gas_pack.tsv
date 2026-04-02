@@ -11,3 +11,4 @@ e590b35	887232	discard	unchecked setShares loop increment
 fea6933	898693	discard	inline reward claim accrual path
 0d8f59f	862368	keep	specialize setShares zero-accrual path
 fedb18f	245771	keep	inline merkle verification into claim
+cdf7283	236051	keep	make merkle root immutable

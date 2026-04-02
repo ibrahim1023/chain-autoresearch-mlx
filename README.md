@@ -113,13 +113,13 @@ Current outcomes:
 
 - `TokenLedger`: baseline `835526`, best kept `813699`, beat baseline
 - `RewardDistributor`: baseline `887232`, best kept `862368`, beat baseline
-- `MerkleClaimer`: baseline `250228`, best kept `245771`, beat baseline
+- `MerkleClaimer`: baseline `250228`, best kept `236051`, beat baseline
 
 This means the repo now has broad success across the current initial gas-pack contract patterns relative to the repository baseline policy.
 
 What it still does not prove:
 
-- superiority over stronger manual comparators across the full pack
+- superiority over stronger manual comparators beyond the current fixed pack
 - a generally reliable autonomous blockchain optimizer outside the current fixed pack
 
 Current decision:
@@ -140,15 +140,19 @@ The repo now has direct benchmark evidence against frozen stronger manual compar
 
 - `TokenLedger`: current kept `813699`, stronger comparator `831827`, current kept wins
 - `RewardDistributor`: current kept `862368`, stronger comparator `894867`, current kept wins
-- `MerkleClaimer`: current kept `245771`, stronger comparator `236456`, stronger comparator wins
+- `MerkleClaimer`: current kept `236051`, stronger comparator `236456`, current kept wins
 
 So the current wins should still be read as:
 
 - beat the repository baseline
 
+- and:
+
+- beat the frozen stronger manual comparators for the current fixed gas-pack
+
 not yet:
 
-- beat a stronger human gas-aware implementation across the full current gas pack
+- beat stronger human gas-aware implementations beyond the current fixed gas-pack
 
 ## Repository Anchors
 

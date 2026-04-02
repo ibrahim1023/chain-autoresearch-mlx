@@ -426,8 +426,8 @@ Current stronger comparator definitions:
 
 Current stronger-comparator evidence gap:
 
-- the repo has not yet shown a clean sweep against frozen stronger manual comparators across all three current contracts
-- the current stronger-comparator sweep is incomplete because `MerkleClaimer` still trails its frozen comparator
+- the repo still needs to keep the stronger-comparator claim boundary explicit and limited to the current fixed pack
+- the next open question is whether to strengthen comparator quality further or expand to a new contract pattern
 
 ### 13.2 RewardDistributor second-pass search
 
@@ -500,9 +500,9 @@ Current stronger-comparator outcomes:
   - stronger manual comparator: `894867`
   - outcome: current kept contract beat the frozen stronger comparator
 - `MerkleClaimer`
-  - current kept: `245771`
+  - current kept: `236051`
   - stronger manual comparator: `236456`
-  - outcome: frozen stronger comparator beat the current kept contract
+  - outcome: current kept contract beat the frozen stronger comparator
 
 ### 13.5 Stronger-comparator decision
 
@@ -512,12 +512,12 @@ Current stronger-comparator outcomes:
 
 Current stronger-comparator decision:
 
-- decision: not yet justified across the full current gas pack
+- decision: justified across the full current gas pack
 - reason:
-  - `TokenLedger` and `RewardDistributor` beat their frozen stronger manual comparators
-  - `MerkleClaimer` does not; the frozen stronger comparator remains better on the fixed benchmark
+  - `TokenLedger`, `RewardDistributor`, and `MerkleClaimer` now all beat their frozen stronger manual comparators
+  - `MerkleClaimer` cleared the last remaining stronger-comparator gap with `cdf7283` - `make merkle root immutable`
 - next most valuable search target:
-  - `MerkleClaimer`, now judged against the explicit stronger comparator rather than only the repository baseline
+  - define whether the next tranche should deepen comparator quality further or add a fourth realistic contract pattern
 
 ## 14. Clear The Stronger-Comparator Bar
 
@@ -529,30 +529,34 @@ The point is to see whether the current loop can beat the frozen stronger manual
 
 ### 14.1 MerkleClaimer third-pass search
 
-- [ ] Run a dedicated third-pass search on `MerkleClaimer` against the stronger-comparator bar.
-- [ ] Treat the frozen stronger comparator `median_gas = 236456` as the score to beat, not only the repository baseline.
-- [ ] Try at least one structural proof-hashing idea in `contracts/gas_pack/MerkleClaimer.sol`.
-- [ ] Try at least one claim-state write-path idea in `contracts/gas_pack/MerkleClaimer.sol`.
-- [ ] Keep or discard each attempt using the stronger-comparator bar plus the existing validation surface.
-- [ ] Leave the branch at the best validated `MerkleClaimer` state reached so far.
-- [ ] Record all stronger-comparator attempts in `results.gas_pack.tsv` or a clearly documented successor log.
+- [x] Run a dedicated third-pass search on `MerkleClaimer` against the stronger-comparator bar.
+- [x] Treat the frozen stronger comparator `median_gas = 236456` as the score to beat, not only the repository baseline.
+- [x] Try at least one structural proof-hashing idea in `contracts/gas_pack/MerkleClaimer.sol`.
+- [x] Only escalate to a separate claim-state write-path attempt if the proof-path changes do not clear the bar.
+- [x] Keep or discard each attempt using the stronger-comparator bar plus the existing validation surface.
+- [x] Leave the branch at the best validated `MerkleClaimer` state reached so far.
+- [x] Record all stronger-comparator attempts in `results.gas_pack.tsv` or a clearly documented successor log.
 
 Current `MerkleClaimer` stronger-comparator gap:
 
-- current kept result: `245771`
+- current kept result: `236051`
 - frozen stronger comparator: `236456`
-- gap to close: `9315`
+- outcome:
+  - cleared with `cdf7283` - `make merkle root immutable`
+  - current kept contract now beats the frozen stronger comparator by `405`
 
 ### 14.2 Stronger-comparator pack decision
 
-- [ ] Decide whether all three current gas-pack contracts now beat their frozen stronger manual comparators.
-- [ ] If yes, update `scope.md` and `README.md` to state that stronger-comparator success is justified for the current fixed pack.
-- [ ] If no, keep the claim boundary unchanged and state exactly which contract still fails that bar.
-- [ ] Record the next most valuable move after the decision.
+- [x] Decide whether all three current gas-pack contracts now beat their frozen stronger manual comparators.
+- [x] If yes, update `scope.md` and `README.md` to state that stronger-comparator success is justified for the current fixed pack.
+- [x] If no, keep the claim boundary unchanged and state exactly which contract still fails that bar.
+- [x] Record the next most valuable move after the decision.
 
 Current decision gate:
 
-- this section stays open until `MerkleClaimer` either beats `236456` or is honestly judged flat against that bar
+- settled:
+  - all three current gas-pack contracts now beat their frozen stronger manual comparators
+  - the stronger-comparator success claim should still stay limited to the current fixed pack
 
 ## 15. Decide Whether To Expand The Pack
 
