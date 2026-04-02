@@ -19,20 +19,28 @@ contract RewardDistributor {
     function setShares(address[] calldata accounts, uint256[] calldata newShares) external {
         uint256 length = accounts.length;
         if (length != newShares.length) revert LengthMismatch();
+        uint256 currentAccRewardPerShare = accRewardPerShare;
+        bool hasAccrual = currentAccRewardPerShare != 0;
 
         for (uint256 i = 0; i < length; ++i) {
             address account = accounts[i];
             uint256 oldShare = shares[account];
             uint256 nextShare = newShares[i];
 
-            if (nextShare > oldShare) {
+            if (oldShare == 0) {
+                totalShares += nextShare;
+            } else if (nextShare == 0) {
+                totalShares -= oldShare;
+            } else if (nextShare > oldShare) {
                 totalShares += nextShare - oldShare;
             } else if (oldShare > nextShare) {
                 totalShares -= oldShare - nextShare;
             }
 
             shares[account] = nextShare;
-            rewardDebt[account] = _accruedReward(nextShare);
+            if (hasAccrual) {
+                rewardDebt[account] = (nextShare * currentAccRewardPerShare) / SCALE;
+            }
         }
     }
 
