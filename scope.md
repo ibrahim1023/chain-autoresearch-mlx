@@ -399,6 +399,29 @@ The current recommended ZK meaningful-result bar is:
 - invalid fixtures still fail
 - the verifying key, fixtures, and benchmark calls stay fixed during the pass
 
+The current recommended first ZK scaffold layout is:
+
+- target:
+  - `contracts/zk_verifier_pack/BN254Groth16Verifier.sol`
+- correctness tests:
+  - `test/zk_verifier_pack/BN254Groth16Verifier.t.sol`
+- rejection-surface tests:
+  - `test/zk_verifier_pack/BN254Groth16VerifierRejection.t.sol`
+- fixture helper:
+  - `test/zk_verifier_pack/ZKVerifierFixtures.sol`
+- benchmark:
+  - `test/zk_verifier_pack/ZKVerifierPackBenchmark.t.sol`
+- runner scripts:
+  - `scripts/run_zk_verifier_benchmark.py`
+  - `scripts/run_zk_verifier_experiment.py`
+
+The current recommended first benchmark surface is:
+
+- `2` fixed valid verification cases for gas measurement
+- invalid fixtures remain in correctness validation only
+- one primary metric:
+  - median gas across the `2` fixed valid cases
+
 ## Relationship To Existing Files
 
 The repository still contains legacy MLX-era material.

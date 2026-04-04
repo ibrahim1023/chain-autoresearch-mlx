@@ -96,3 +96,4 @@ Next Best Steps:
 - The ZK validation-surface decision is now set: freeze `2` valid fixtures and `3` invalid fixtures, and keep them fixed across any future verifier-gas search pass.
 - The current recommended first ZK target is a full BN254 Groth16-style verifier contract.
 - The ZK meaningful-result bar is now explicit: gas must improve while the frozen valid and invalid fixtures keep the same verification outcomes.
+- The first ZK scaffold layout is now set around `BN254Groth16Verifier`, `ZKVerifierFixtures.sol`, a dedicated rejection test file, a benchmark contract, and dedicated ZK runner scripts.

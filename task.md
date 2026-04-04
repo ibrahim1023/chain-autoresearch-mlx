@@ -792,6 +792,115 @@ Suggested default:
   - invalid proofs still fail
   - the benchmark and fixtures stay fixed during the pass
 
+## 18. Scaffold The First ZK Verifier Arena
+
+This phase should turn the current ZK planning work into a concrete but still narrow local scaffold.
+
+The point is not to prove the whole ZK thesis yet.
+
+The point is to create the first deterministic verifier-gas arena that can eventually support a baseline and keep-or-discard loop.
+
+### 18.1 Define The Initial File Layout
+
+- [x] Decide the exact first verifier target name.
+- [x] Decide whether fixtures should live:
+  - inline in Solidity tests
+  - or in a dedicated Solidity fixture helper
+- [x] Define the first benchmark contract path.
+- [x] Define the first correctness test path.
+- [x] Define the first invariant or rejection-surface test path.
+
+Recommended default:
+
+- target path:
+  - `contracts/zk_verifier_pack/<VerifierTarget>.sol`
+- correctness tests:
+  - `test/zk_verifier_pack/<VerifierTarget>.t.sol`
+- fixture helper:
+  - `test/zk_verifier_pack/ZKVerifierFixtures.sol`
+- benchmark:
+  - `test/zk_verifier_pack/ZKVerifierPackBenchmark.t.sol`
+- validation:
+  - keep fixtures in Solidity first for maximum local determinism and minimal tooling spread
+
+Current phase 18.1 file-layout decision:
+
+- first verifier target name:
+  - `BN254Groth16Verifier`
+- contract path:
+  - `contracts/zk_verifier_pack/BN254Groth16Verifier.sol`
+- fixture location:
+  - `test/zk_verifier_pack/ZKVerifierFixtures.sol`
+- correctness test path:
+  - `test/zk_verifier_pack/BN254Groth16Verifier.t.sol`
+- rejection-surface test path:
+  - `test/zk_verifier_pack/BN254Groth16VerifierRejection.t.sol`
+- benchmark path:
+  - `test/zk_verifier_pack/ZKVerifierPackBenchmark.t.sol`
+- reason:
+  - a dedicated Solidity fixture helper keeps valid and invalid artifacts frozen in-repo without adding a second toolchain dependency just to load fixtures
+
+### 18.2 Define The First Benchmark Surface
+
+- [x] Choose the benchmarked valid-verification path.
+- [x] Decide whether to include one or two additional valid verification cases as secondary outputs.
+- [x] Decide whether invalid fixtures belong in the gas benchmark or only in correctness validation.
+- [x] Keep one primary metric only.
+
+Recommended default:
+
+- primary benchmark path:
+  - one fixed valid verification case
+- secondary valid cases:
+  - one additional accepted case with different public inputs
+- invalid fixtures:
+  - correctness validation only, not part of the gas metric aggregation
+- primary metric:
+  - median gas across the fixed valid verification benchmark cases
+
+Current phase 18.2 benchmark decision:
+
+- benchmarked primary valid path:
+  - one fixed accepted verification case for `BN254Groth16Verifier`
+- secondary valid path count:
+  - one additional accepted case with different public inputs
+- invalid-fixture placement:
+  - correctness validation only
+- primary metric:
+  - median gas across the `2` fixed valid verification benchmark cases
+- reason:
+  - gas should measure accepted verification work only, while invalid fixtures remain part of semantic validation rather than the optimization target
+
+### 18.3 Define The First Local Runner Plan
+
+- [x] Decide whether to extend the current runner or add a ZK-specific runner.
+- [x] Define the minimum commands needed to run:
+  - correctness validation
+  - invalid-fixture rejection checks
+  - gas benchmark extraction
+- [x] Keep the runner simpler than the verifier arena it orchestrates.
+
+Recommended default:
+
+- runner style:
+  - add a ZK-specific runner rather than overloading the gas-pack runner immediately
+- likely script path:
+  - `scripts/run_zk_verifier_benchmark.py`
+
+Current phase 18.3 runner decision:
+
+- runner style:
+  - add a ZK-specific runner
+- likely script paths:
+  - `scripts/run_zk_verifier_benchmark.py`
+  - `scripts/run_zk_verifier_experiment.py`
+- minimum command plan:
+  - run correctness tests for `BN254Groth16Verifier`
+  - run rejection-surface tests against the frozen invalid fixtures
+  - run the fixed valid verification benchmark contract and extract gas metrics
+- scope guard:
+  - do not overload the existing `gas_pack` runner with ZK-specific fixture logic in the first ZK scaffold
+
 Current phase 17.4 decision:
 
 - a meaningful first ZK result requires:
