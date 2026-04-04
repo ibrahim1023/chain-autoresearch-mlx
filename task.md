@@ -673,3 +673,65 @@ Implementation notes:
     - `15807`
 - append-only vault baseline history currently includes earlier scaffold and pre-guard entries
 - manual comparator files are deferred until the fourth target baseline exists
+
+## 17. Define A Future ZK Arena
+
+This phase is future-facing.
+
+It should not interfere with the ongoing `gas_pack` search loop, but it should make the next non-gas arena concrete enough to build later.
+
+### 17.1 Choose The ZK Arena Shape
+
+- [ ] Decide whether the first ZK arena should optimize:
+  - verifier gas
+  - proving time
+  - or constraint count
+- [ ] Keep the first ZK arena to one proof-system family only.
+- [ ] Keep the first ZK arena to one editable target per pass.
+- [ ] Choose one primary metric only.
+
+Recommended default:
+
+- first ZK arena: `zk_verifier_pack`
+- proof-system scope: one verifier family only
+- primary metric: median gas across a fixed verification benchmark suite
+
+### 17.2 Define The ZK Validation Surface
+
+- [ ] Freeze a small valid-proof fixture set.
+- [ ] Freeze a small invalid-proof fixture set.
+- [ ] Define the correctness rule:
+  - valid proofs must verify
+  - invalid proofs must fail
+- [ ] Keep those fixtures fixed during any future ZK search pass.
+
+The point is to prevent fake wins that only weaken verification logic.
+
+### 17.3 Define The First ZK Target
+
+- [ ] Choose the first editable target explicitly.
+- [ ] Decide whether it should be:
+  - a full verifier contract
+  - or a verifier helper / proof-decoding helper
+- [ ] Record why that target is the highest-signal first hotspot.
+
+Recommended default:
+
+- first target type:
+  - a narrow verifier contract or verifier helper
+- reason:
+  - it fits the existing local benchmark-and-keep/discard model better than a prover or circuit arena
+
+### 17.4 Set The ZK Meaningful-Result Bar
+
+- [ ] Define what counts as a meaningful ZK result in this repo.
+- [ ] Require frozen valid/invalid fixtures before stronger ZK claims.
+- [ ] Decide when a stronger manual comparator becomes necessary for the ZK arena.
+
+Suggested default:
+
+- a meaningful first ZK result means:
+  - verifier gas improves on a fixed local benchmark
+  - valid proofs still verify
+  - invalid proofs still fail
+  - the benchmark and fixtures stay fixed during the pass

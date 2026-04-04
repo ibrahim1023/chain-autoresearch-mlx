@@ -137,6 +137,24 @@ Current decision:
 
 - broader success across the current initial gas-pack contract patterns is justified
 
+## Future ZK Direction
+
+The best ZK fit for this repository is a separate future arena, not a mix-in to `gas_pack`.
+
+The leading candidate is:
+
+- `zk_verifier_pack`
+
+Recommended shape:
+
+- one proof system only at first
+- one verifier contract or verifier helper target at a time
+- fixed valid-proof and invalid-proof fixtures
+- primary metric: verifier `median_gas`
+- correctness gate: valid proofs accept and invalid proofs reject
+
+That keeps the work aligned with the repo's current autoresearch model instead of widening into broad ZK protocol work too early.
+
 ## Stronger Comparator Gap
 
 The next bar is not just "beat the repo's first validated draft."

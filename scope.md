@@ -350,12 +350,31 @@ Only after Gas Pack V2 is solid should the repo expand into a second serious are
 - target: one simulator config or parameter file
 - metric: throughput, fairness, liquidation count, or similar
 
+### ZK Verifier Research
+
+- target: one verifier contract or verifier helper file
+- metric: median gas across a fixed local verification benchmark suite
+- validation: valid proofs verify, invalid proofs fail, and fixtures stay frozen during the pass
+
 ### Replay-Based Strategy Research
 
 - target: one strategy file
 - metric: profit net of costs on a fixed replay
 
 These are valid future directions, but not the immediate V2 requirement.
+
+The strongest current ZK candidate is:
+
+- a narrow `zk_verifier_pack` arena
+
+That future arena should stay narrow:
+
+- one proof system only at first
+- one verifier family only at first
+- one editable target per pass
+- one primary metric
+- fixed valid and invalid proof fixtures
+- no remote prover dependencies
 
 ## Relationship To Existing Files
 
