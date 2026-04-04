@@ -99,3 +99,4 @@ Next Best Steps:
 - The first ZK scaffold layout is now set around `BN254Groth16Verifier`, `ZKVerifierFixtures.sol`, a dedicated rejection test file, a benchmark contract, and dedicated ZK runner scripts.
 - The first ZK artifact decision is now set: Solidity-struct fixtures, a single `verifyProof(...)` entrypoint, and `2` fixed valid benchmark cases plus `3` rejection cases.
 - The first ZK runner pair is now scaffolded in `scripts/run_zk_verifier_benchmark.py` and `scripts/run_zk_verifier_experiment.py`.
+- The first real ZK verifier scaffold now exists and has a recorded local baseline in `results.zk_verifier_pack.tsv` with `median_gas = 223677`.

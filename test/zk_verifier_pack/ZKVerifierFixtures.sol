@@ -51,17 +51,14 @@ library ZKVerifierFixtures {
         fixture.proofC = BN254Groth16Verifier.G1Point(0, 0);
     }
 
-    function validCaseB() internal pure returns (ValidFixture memory fixture) {
+    function validCaseB() internal view returns (ValidFixture memory fixture) {
         fixture.publicInputs[0] = 2;
-        fixture.proofA = BN254Groth16Verifier.G1Point(
-            1368015179489954701390400359078579693043519447331113978918064868415326638035,
-            9918110051302171585080402603319702774565515993150576347155970296011118125764
-        );
+        fixture.proofA = _scalarMul(_g1Generator(), 2);
         fixture.proofB = _g2Generator();
         fixture.proofC = BN254Groth16Verifier.G1Point(0, 0);
     }
 
-    function invalidWrongPublicInputs() internal view returns (InvalidFixture memory fixture) {
+    function invalidWrongPublicInputs() internal pure returns (InvalidFixture memory fixture) {
         ValidFixture memory valid = validCaseA();
         fixture.category = InvalidCategory.WrongPublicInputs;
         fixture.publicInputs[0] = 2;
@@ -70,11 +67,11 @@ library ZKVerifierFixtures {
         fixture.proofC = valid.proofC;
     }
 
-    function invalidCorruptedProof() internal view returns (InvalidFixture memory fixture) {
+    function invalidCorruptedProof() internal pure returns (InvalidFixture memory fixture) {
         ValidFixture memory valid = validCaseA();
         fixture.category = InvalidCategory.CorruptedProof;
         fixture.publicInputs[0] = valid.publicInputs[0];
-        fixture.proofA = BN254Groth16Verifier.G1Point(valid.proofA.X, valid.proofA.Y + 1);
+        fixture.proofA = BN254Groth16Verifier.G1Point(0, 0);
         fixture.proofB = valid.proofB;
         fixture.proofC = valid.proofC;
     }
@@ -102,5 +99,24 @@ library ZKVerifierFixtures {
 
     function _g1Generator() private pure returns (BN254Groth16Verifier.G1Point memory) {
         return BN254Groth16Verifier.G1Point(1, 2);
+    }
+
+    function _scalarMul(BN254Groth16Verifier.G1Point memory point, uint256 scalar)
+        private
+        view
+        returns (BN254Groth16Verifier.G1Point memory result)
+    {
+        uint256[] memory input = new uint256[](3);
+        input[0] = point.X;
+        input[1] = point.Y;
+        input[2] = scalar;
+
+        uint256[2] memory output;
+        bool ok;
+        assembly {
+            ok := staticcall(gas(), 7, add(input, 0x20), 0x60, output, 0x40)
+        }
+        require(ok, "fixture scalar mul failed");
+        result = BN254Groth16Verifier.G1Point(output[0], output[1]);
     }
 }

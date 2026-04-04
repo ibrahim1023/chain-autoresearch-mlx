@@ -1091,3 +1091,64 @@ Runner scaffold counts as complete when:
 - the experiment script runs correctness, rejection, and benchmark steps in order
 - both scripts are ZK-specific and do not reuse the gas-pack target list
 - both scripts are ready to point at the first verifier scaffold files when they appear
+
+## 21. Implement The First ZK Verifier Scaffold
+
+This phase turns the ZK arena from planning into a real local implementation.
+
+The point is not to claim a full ZK optimization result yet.
+
+The point is to make the first verifier-gas arena executable end to end with frozen fixtures and a recorded baseline.
+
+### 21.1 BN254 verifier scaffold
+
+- [x] Add `contracts/zk_verifier_pack/BN254Groth16Verifier.sol`.
+- [x] Add `test/zk_verifier_pack/ZKVerifierFixtures.sol`.
+- [x] Add `test/zk_verifier_pack/BN254Groth16Verifier.t.sol`.
+- [x] Add `test/zk_verifier_pack/BN254Groth16VerifierRejection.t.sol`.
+- [x] Add `test/zk_verifier_pack/ZKVerifierPackBenchmark.t.sol`.
+- [x] Keep the fixture set frozen at `2` valid and `3` invalid cases.
+- [x] Keep the verifier surface to one `verifyProof(...)` entrypoint.
+
+Current first ZK scaffold:
+
+- contract:
+  - `contracts/zk_verifier_pack/BN254Groth16Verifier.sol`
+- fixture helper:
+  - `test/zk_verifier_pack/ZKVerifierFixtures.sol`
+- correctness tests:
+  - `test/zk_verifier_pack/BN254Groth16Verifier.t.sol`
+- rejection tests:
+  - `test/zk_verifier_pack/BN254Groth16VerifierRejection.t.sol`
+- benchmark:
+  - `test/zk_verifier_pack/ZKVerifierPackBenchmark.t.sol`
+- current verifier shape:
+  - one `verifyProof(...)` entrypoint
+  - BN254 precompile-backed verifier scaffold
+  - deterministic frozen valid and invalid fixtures
+
+### 21.2 First ZK baseline
+
+- [x] Run the first ZK scaffold end to end.
+- [x] Record the first `zk_verifier_pack` baseline.
+- [x] Confirm the ZK runner pair executes the correctness, rejection, and benchmark path.
+
+Current first ZK baseline:
+
+- results log:
+  - `results.zk_verifier_pack.tsv`
+- baseline commit:
+  - `6f4c816`
+- baseline description:
+  - `baseline BN254Groth16Verifier zk_verifier_pack v1`
+- baseline `median_gas`:
+  - `223677`
+- per-case gas:
+  - `testGasBN254Groth16VerifierValidCaseA`: `223666`
+  - `testGasBN254Groth16VerifierValidCaseB`: `223688`
+- validation status:
+  - correctness tests pass
+  - rejection tests pass
+  - benchmark passes
+  - ZK benchmark runner passes
+  - ZK experiment runner passes
