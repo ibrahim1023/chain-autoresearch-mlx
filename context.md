@@ -7,10 +7,10 @@ Project:
 - Purpose: Build a deterministic local blockchain autoresearch harness that can optimize realistic smart-contract implementations for gas under strong correctness constraints.
 
 Current Status:
-- Phase: First real `zk_verifier_pack` optimization pass after the verifier scaffold and baseline.
+- Phase: Frozen comparator benchmark and claim-boundary decision after the first kept `zk_verifier_pack` win.
 - Current branch: `codex/zk-verifier-v3`
-- Current HEAD: `5672957`
-- Honest repo state: working V2 gas-pack infrastructure on `main`, plus a narrow ZK verifier-gas arena on the V3 branch with one real kept post-baseline improvement.
+- Current HEAD: `4224858`
+- Honest repo state: working V2 gas-pack infrastructure on `main`, plus a narrow ZK verifier-gas arena on the V3 branch with one real kept post-baseline improvement and a stronger frozen comparator that the current kept verifier does not beat.
 
 - Completed the V2 `gas_pack` work on `main`, including `VaultAccounting` and an initial kept vault improvement.
 - Defined the V3 ZK direction as a narrow verifier-gas arena on `codex/zk-verifier-v3`.
@@ -25,6 +25,7 @@ Current Status:
   - `scripts/run_zk_verifier_experiment.py`
 - Recorded the first ZK baseline in `results.zk_verifier_pack.tsv`.
 - Kept the first real ZK verifier optimization result after validation.
+- Added and benchmarked a frozen stronger manual comparator for the same BN254 fixture set.
 
 Best ZK Result So Far:
 - Target: `BN254Groth16Verifier`
@@ -34,35 +35,45 @@ Best ZK Result So Far:
 - Best kept `median_gas`: `150360`
 - Improvement: `73317`
 
+Frozen ZK Comparator:
+- Target: `BN254Groth16Comparator`
+- Comparator commit: `4224858`
+- Comparator description: `frozen stronger manual comparator BN254Groth16Comparator v1`
+- Comparator `median_gas`: `33199`
+
 ZK Attempt History:
 - `6f4c816` - keep - `baseline BN254Groth16Verifier zk_verifier_pack v1`
 - `5672957` - keep - `inline fixed verifier constants and reduce pairing work`
+- `4224858` - keep - `frozen stronger manual comparator BN254Groth16Comparator v1`
 
 Current ZK Arena Status:
 - `BN254Groth16Verifier`
   - baseline: `223677`
   - best kept: `150360`
-  - outcome: first real post-baseline ZK verifier-gas win
+  - outcome: first real post-baseline ZK verifier-gas win, but not a stronger-comparator win
+- `BN254Groth16Comparator`
+  - baseline: `33199`
+  - best kept: `33199`
+  - outcome: frozen stronger manual comparator bar for the current fixed fixture set
 
 What The Current State Proves:
 - The repo can run a narrow local ZK verifier-gas arena end to end.
 - The repo can keep or discard verifier changes against fixed valid and invalid fixtures.
 - The repo can preserve semantic validation while improving accepted verification gas.
-- The repo now has one real kept ZK improvement after a recorded baseline, not only planning docs.
+- The repo now has one real kept ZK improvement after a recorded baseline, plus a frozen stronger comparator benchmark.
 
 What It Does Not Yet Prove:
 - Broad success across ZK verifier families.
-- Wins against stronger manual expert comparators for verifier implementations.
+- A kept verifier win against the stronger frozen comparator bar.
 - A generally reliable autonomous blockchain optimizer across gas and ZK arenas.
 
 Known Gaps:
 - The ZK arena still has only one verifier family and one target.
 - The current verifier is a narrow local scaffold rather than a full generated production verifier pipeline.
-- The stronger-comparator bar for ZK has not yet been defined beyond the repo baseline.
-- The branch still needs more than one keep/discard attempt before any broader claim would be credible.
+- The current kept verifier does not beat the frozen stronger comparator.
+- The branch would need a reopened main-target pass or a second ZK target to justify any broader claim.
 
 Next Best Steps:
-- Continue the `BN254Groth16Verifier` keep-or-discard loop from the new kept state at `150360`.
-- Add at least one discard attempt or additional kept result so the ZK arena has a real early frontier rather than a single jump.
-- Define the first stronger manual comparator policy for `zk_verifier_pack` after a few local attempts exist.
-- Keep the ZK arena narrow until the verifier-gas loop is clearly repeatable.
+- Stop the ZK tranche here for now.
+- If ZK is revisited later, reopen the main target for more search only after a new evidence bar is defined.
+- The current comparator file is the strongest manual local reference for the fixed BN254 fixture set.

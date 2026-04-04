@@ -1,3 +1,4 @@
 commit	median_gas	status	description
 6f4c816	223677	keep	baseline BN254Groth16Verifier zk_verifier_pack v1
 5672957	150360	keep	inline fixed verifier constants and reduce pairing work
+4224858	33199	keep	frozen stronger manual comparator BN254Groth16Comparator v1
