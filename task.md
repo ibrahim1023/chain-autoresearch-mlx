@@ -1049,3 +1049,45 @@ Current phase 19.4 implementation gate:
   - a kept optimization win
   - a stronger manual comparator
   - more than one verifier family
+
+## 20. Scaffold The ZK Runner Pair
+
+This phase records the first concrete implementation step for the future verifier arena.
+
+The point is to keep the runner separate from `gas_pack`, but real enough that the verifier scaffold can be executed locally once the contract and fixtures exist.
+
+### 20.1 Add The ZK Runner Scripts
+
+- [x] Add `scripts/run_zk_verifier_benchmark.py`.
+- [x] Add `scripts/run_zk_verifier_experiment.py`.
+- [x] Keep the ZK runners separate from the gas-pack runner pair.
+- [x] Wire the ZK runners to the first verifier target and fixed benchmark naming.
+
+Current ZK runner scaffold:
+
+- benchmark runner:
+  - `scripts/run_zk_verifier_benchmark.py`
+- experiment runner:
+  - `scripts/run_zk_verifier_experiment.py`
+- arena:
+  - `zk_verifier_pack`
+- first target:
+  - `BN254Groth16Verifier`
+- primary verification command plan:
+  - run correctness tests
+  - run rejection tests
+  - run the fixed valid-case benchmark and extract median gas
+- result log default:
+  - `results.zk_verifier_pack.tsv`
+
+### 20.2 Define The Runner Completion Bar
+
+- [x] Define what this runner pair must do before the first verifier scaffold exists.
+- [x] Keep the completion bar lower than a full ZK baseline.
+
+Runner scaffold counts as complete when:
+
+- the benchmark script parses gas snapshots and reports median gas
+- the experiment script runs correctness, rejection, and benchmark steps in order
+- both scripts are ZK-specific and do not reuse the gas-pack target list
+- both scripts are ready to point at the first verifier scaffold files when they appear

@@ -98,3 +98,4 @@ Next Best Steps:
 - The ZK meaningful-result bar is now explicit: gas must improve while the frozen valid and invalid fixtures keep the same verification outcomes.
 - The first ZK scaffold layout is now set around `BN254Groth16Verifier`, `ZKVerifierFixtures.sol`, a dedicated rejection test file, a benchmark contract, and dedicated ZK runner scripts.
 - The first ZK artifact decision is now set: Solidity-struct fixtures, a single `verifyProof(...)` entrypoint, and `2` fixed valid benchmark cases plus `3` rejection cases.
+- The first ZK runner pair is now scaffolded in `scripts/run_zk_verifier_benchmark.py` and `scripts/run_zk_verifier_experiment.py`.
