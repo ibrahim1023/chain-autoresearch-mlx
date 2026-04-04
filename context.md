@@ -7,9 +7,8 @@ Project:
 - Purpose: Build a deterministic local blockchain autoresearch harness that can optimize realistic smart-contract implementations for gas under strong correctness constraints.
 
 Current Status:
-- Phase: Frozen comparator benchmark and claim-boundary decision after the first kept `zk_verifier_pack` win.
+- Phase: ZK wrap-up after early-frontier discards and the frozen comparator claim-boundary decision.
 - Current branch: `codex/zk-verifier-v3`
-- Current HEAD: `4224858`
 - Honest repo state: working V2 gas-pack infrastructure on `main`, plus a narrow ZK verifier-gas arena on the V3 branch with one real kept post-baseline improvement and a stronger frozen comparator that the current kept verifier does not beat.
 
 - Completed the V2 `gas_pack` work on `main`, including `VaultAccounting` and an initial kept vault improvement.
@@ -45,6 +44,8 @@ ZK Attempt History:
 - `6f4c816` - keep - `baseline BN254Groth16Verifier zk_verifier_pack v1`
 - `5672957` - keep - `inline fixed verifier constants and reduce pairing work`
 - `4224858` - keep - `frozen stronger manual comparator BN254Groth16Comparator v1`
+- `b92299c` - crash - `try fixed-size precompile buffers through helper mutation`
+- `b92299c` - crash - `try fixed-size precompile buffers with inline pairing input`
 
 Current ZK Arena Status:
 - `BN254Groth16Verifier`
@@ -61,6 +62,7 @@ What The Current State Proves:
 - The repo can keep or discard verifier changes against fixed valid and invalid fixtures.
 - The repo can preserve semantic validation while improving accepted verification gas.
 - The repo now has one real kept ZK improvement after a recorded baseline, plus a frozen stronger comparator benchmark.
+- The repo now also has a real early frontier with post-win failed attempts rather than only one successful jump.
 
 What It Does Not Yet Prove:
 - Broad success across ZK verifier families.

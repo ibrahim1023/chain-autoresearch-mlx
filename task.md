@@ -1184,24 +1184,36 @@ Current first ZK search-pass summary:
 
 ## 23. Build A Real Early ZK Frontier
 
-- [ ] Continue the `BN254Groth16Verifier` keep-or-discard loop from the first kept state.
-- [ ] Try at least `2` additional optimization ideas after the first kept win.
-- [ ] Ensure at least `1` post-win attempt is recorded as a discard if it fails the metric or validation bar.
-- [ ] Keep the frozen valid and invalid fixtures unchanged during every attempt.
-- [ ] Leave the branch at the best validated `BN254Groth16Verifier` state reached so far.
+- [x] Continue the `BN254Groth16Verifier` keep-or-discard loop from the first kept state.
+- [x] Try at least `2` additional optimization ideas after the first kept win.
+- [x] Ensure at least `1` post-win attempt is recorded as a discard if it fails the metric or validation bar.
+- [x] Keep the frozen valid and invalid fixtures unchanged during every attempt.
+- [x] Leave the branch at the best validated `BN254Groth16Verifier` state reached so far.
 
 This phase exists to prevent the ZK arena from looking like a one-jump anecdote.
-
-Note:
-
-- this phase is left open in this tranche because the main target file is frozen by the comparator-only scope
-- the stronger-manual-comparator work below is the scope-compliant way to close out the ZK tranche for now
 
 Completion bar:
 
 - `results.zk_verifier_pack.tsv` shows more than one post-baseline attempt
 - the branch ends at the best kept verifier state
 - the validation surface remains unchanged across the whole tranche
+
+Current early-frontier summary:
+
+- start state:
+  - `BN254Groth16Verifier` at `150360`
+- extra attempt 1:
+  - status: `crash`
+  - description: `try fixed-size precompile buffers through helper mutation`
+  - result: valid fixtures failed after the pairing input stopped mutating correctly
+- extra attempt 2:
+  - status: `crash`
+  - description: `try fixed-size precompile buffers with inline pairing input`
+  - result: valid fixtures still failed after changing the precompile input layout
+- end state:
+  - branch restored to the best validated kept verifier result at `150360`
+- interpretation:
+  - the ZK arena now has a real early frontier with post-win failed attempts, not only a single kept jump
 
 ## 24. Define The First Stronger Manual Comparator For ZK
 
