@@ -911,3 +911,141 @@ Current phase 17.4 decision:
 - stronger-comparator rule:
   - require a stronger manual comparator after the first working ZK baseline and first kept win exist
   - the comparator should be a careful human gas-aware verifier implementation under the same frozen fixtures
+
+## 19. Define The First ZK Artifact Surface
+
+This phase should turn the current verifier-arena scaffold into a concrete implementation contract.
+
+The point is to decide the exact artifact format and function surface before writing the first ZK verifier files.
+
+### 19.1 Define The Fixture Artifact Format
+
+- [x] Decide how `ZKVerifierFixtures.sol` should represent:
+  - the verifying key
+  - each valid proof fixture
+  - each invalid proof fixture
+- [x] Decide whether fixture access should be exposed as:
+  - named getter functions
+  - or Solidity structs returned by helper functions
+- [x] Keep the fixture format simple enough that benchmark and correctness tests can share it without conversion code.
+
+Recommended default:
+
+- encode fixtures as Solidity structs returned by named helper functions
+- keep the verifying key in the same fixture helper for the first scaffold
+- avoid JSON or off-chain parsing in the first arena
+
+Current phase 19.1 fixture-format decision:
+
+- fixture representation:
+  - store the verifying key as a dedicated Solidity struct
+  - store each valid fixture as a Solidity struct containing:
+    - proof points
+    - public inputs
+    - expected outcome
+  - store each invalid fixture as a Solidity struct containing:
+    - proof points or malformed proof payload
+    - public inputs when applicable
+    - invalid category label
+    - expected outcome
+- access pattern:
+  - expose named helper functions that return Solidity structs
+- fixture helper shape:
+  - one getter for the verifying key
+  - one getter per valid fixture
+  - one getter per invalid fixture
+- reason:
+  - this keeps the fixtures frozen, readable, and directly reusable from correctness tests, rejection tests, and the benchmark without an adapter layer
+
+### 19.2 Define The Verifier Function Surface
+
+- [x] Decide the exact public function name on `BN254Groth16Verifier`.
+- [x] Decide the calldata shape for:
+  - proof points
+  - public inputs
+- [x] Decide whether the first verifier target should expose:
+  - one single verification entrypoint only
+  - or a small helper surface in addition to that entrypoint
+- [x] Keep the editable surface narrow enough that one contract file is still the whole optimization target.
+
+Recommended default:
+
+- one primary entrypoint:
+  - `verifyProof(...)`
+- one verification mode only
+- no extra convenience wrappers in the first scaffold
+
+Current phase 19.2 verifier-surface decision:
+
+- public entrypoint:
+  - `verifyProof(...)`
+- public-input shape:
+  - fixed-size Solidity arrays when the first verifier family allows a stable public-input count
+- proof shape:
+  - explicit calldata arguments for the Groth16 proof points rather than opaque bytes for the first scaffold
+- surface size:
+  - one verification entrypoint only
+- reason:
+  - explicit calldata arguments keep the first verifier arena interpretable and avoid pushing parsing complexity into a helper layer before the baseline exists
+
+### 19.3 Define The Benchmark And Test Names
+
+- [x] Decide the exact benchmark test names for the `2` fixed valid verification cases.
+- [x] Decide the correctness-test names for accepted fixtures.
+- [x] Decide the rejection-test names for each invalid fixture category.
+- [x] Preserve the same naming discipline used by `gas_pack` so later runners can extract metrics predictably.
+
+Recommended default:
+
+- benchmark tests:
+  - `testGasBN254Groth16VerifierValidCaseA`
+  - `testGasBN254Groth16VerifierValidCaseB`
+- correctness tests:
+  - one acceptance test per valid fixture
+- rejection tests:
+  - one rejection test for wrong public inputs
+  - one rejection test for corrupted proof data
+  - one rejection test for malformed calldata or proof layout
+
+Current phase 19.3 naming decision:
+
+- benchmark tests:
+  - `testGasBN254Groth16VerifierValidCaseA`
+  - `testGasBN254Groth16VerifierValidCaseB`
+- correctness tests:
+  - `testVerifyProofAcceptsValidCaseA`
+  - `testVerifyProofAcceptsValidCaseB`
+- rejection tests:
+  - `testVerifyProofRejectsWrongPublicInputs`
+  - `testVerifyProofRejectsCorruptedProof`
+  - `testVerifyProofRejectsMalformedProofLayout`
+- naming rule:
+  - reserve the `testGasBN254Groth16Verifier...` prefix for benchmark extraction only
+
+### 19.4 Define The First Implementation Gate
+
+- [x] State what must exist before the first ZK scaffold implementation counts as complete.
+- [x] Keep the completion bar lower than a full optimization result but higher than a placeholder scaffold.
+
+Suggested default:
+
+- first scaffold counts as complete only when:
+  - `BN254Groth16Verifier.sol` exists
+  - `ZKVerifierFixtures.sol` provides frozen valid and invalid fixtures
+  - correctness tests pass
+  - rejection tests pass
+  - the benchmark runs and emits the primary metric
+
+Current phase 19.4 implementation gate:
+
+- first ZK scaffold is complete only when:
+  - the verifier contract exists at the chosen path
+  - the fixture helper exposes the frozen verifying key plus `2` valid and `3` invalid fixtures
+  - correctness tests confirm both valid fixtures verify
+  - rejection tests confirm all `3` invalid categories fail
+  - the benchmark contract emits gas metrics for the `2` valid benchmark cases
+  - the dedicated ZK runner can execute the validation and benchmark path locally
+- completion does not yet require:
+  - a kept optimization win
+  - a stronger manual comparator
+  - more than one verifier family

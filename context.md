@@ -97,3 +97,4 @@ Next Best Steps:
 - The current recommended first ZK target is a full BN254 Groth16-style verifier contract.
 - The ZK meaningful-result bar is now explicit: gas must improve while the frozen valid and invalid fixtures keep the same verification outcomes.
 - The first ZK scaffold layout is now set around `BN254Groth16Verifier`, `ZKVerifierFixtures.sol`, a dedicated rejection test file, a benchmark contract, and dedicated ZK runner scripts.
+- The first ZK artifact decision is now set: Solidity-struct fixtures, a single `verifyProof(...)` entrypoint, and `2` fixed valid benchmark cases plus `3` rejection cases.

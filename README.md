@@ -160,6 +160,7 @@ Current recommendation:
 - use a full verifier contract as the first editable target
 - treat a ZK result as meaningful only when gas improves without changing verification outcomes on the frozen fixtures
 - scaffold the first verifier arena around `BN254Groth16Verifier` with Solidity-hosted fixtures and a dedicated ZK runner
+- keep the first verifier surface to a single `verifyProof(...)` entrypoint and two fixed valid benchmark cases
 
 That keeps the work aligned with the repo's current autoresearch model instead of widening into broad ZK protocol work too early.
 

@@ -422,6 +422,21 @@ The current recommended first benchmark surface is:
 - one primary metric:
   - median gas across the `2` fixed valid cases
 
+The current recommended first artifact format is:
+
+- `ZKVerifierFixtures.sol` should expose Solidity structs via named getter functions
+- the verifying key should live in the same fixture helper
+- valid fixtures should carry proof points plus public inputs
+- invalid fixtures should carry the failing artifact plus the expected rejection category
+
+The current recommended first verifier surface is:
+
+- one public entrypoint:
+  - `verifyProof(...)`
+- explicit calldata arguments for the Groth16 proof points
+- fixed-size public-input arrays when the verifier family permits it
+- no extra wrapper surface in the first scaffold
+
 ## Relationship To Existing Files
 
 The repository still contains legacy MLX-era material.
