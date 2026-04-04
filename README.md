@@ -20,9 +20,11 @@ The repository has already completed a first blockchain V1 arena:
 
 That V1 arena proved the basic local autoresearch loop works.
 
-The active next step is V2:
+V2 is now complete on `main`:
 
 - a more realistic `gas_pack` arena with stronger correctness guarantees and more credible contract patterns
+- kept wins across the fixed contract pack
+- frozen stronger manual comparator wins across the current gas-pack targets
 
 ## V1 Reference
 
@@ -78,12 +80,11 @@ The chosen next expansion target is:
 
 - `VaultAccounting`, a narrow share-based vault accounting contract
 
-That next tranche is definition-first:
+That tranche is already implemented with:
 
-- fix the API and rounding policy
-- define the benchmark cases
-- define correctness tests and invariant checks
-- only then establish the first baseline
+- contract, correctness tests, invariant checks, and benchmark wiring
+- a recorded baseline in `results.gas_pack.tsv`
+- an initial kept improvement over the vault baseline
 
 ## What V2 Currently Proves
 
@@ -136,12 +137,13 @@ What it still does not prove:
 Current decision:
 
 - broader success across the current initial gas-pack contract patterns is justified
+- stronger-comparator success is also justified for the current fixed gas-pack
 
-## Future ZK Direction
+## ZK Verifier Arena
 
-The best ZK fit for this repository is a separate future arena, not a mix-in to `gas_pack`.
+The best ZK fit for this repository is a separate arena, not a mix-in to `gas_pack`.
 
-The leading candidate is:
+The implemented ZK arena on the V3 branch is:
 
 - `zk_verifier_pack`
 
@@ -153,16 +155,30 @@ Recommended shape:
 - primary metric: verifier `median_gas`
 - correctness gate: valid proofs accept and invalid proofs reject
 
-Current recommendation:
+Current implemented shape:
 
-- start with verifier gas, not proving time or constraint count
-- freeze a tiny fixture set up front rather than generating proofs during runs
-- use a full verifier contract as the first editable target
-- treat a ZK result as meaningful only when gas improves without changing verification outcomes on the frozen fixtures
-- scaffold the first verifier arena around `BN254Groth16Verifier` with Solidity-hosted fixtures and a dedicated ZK runner
-- keep the first verifier surface to a single `verifyProof(...)` entrypoint and two fixed valid benchmark cases
+- verifier gas, not proving time or constraint count
+- one BN254 verifier family
+- one full verifier contract target
+- frozen Solidity-hosted fixtures
+- one `verifyProof(...)` entrypoint
+- two fixed valid benchmark cases
+- dedicated ZK runners and result log
 
 That keeps the work aligned with the repo's current autoresearch model instead of widening into broad ZK protocol work too early.
+
+Current ZK result:
+
+- baseline verifier `median_gas`: `223677`
+- best kept verifier `median_gas`: `150360`
+- frozen stronger comparator `median_gas`: `33199`
+
+So the honest claim boundary is:
+
+- the repo has a real kept verifier-gas win over its ZK baseline
+- the current kept verifier does not beat the frozen stronger manual comparator
+
+That means the ZK arena is real and executable, but it does not yet justify a stronger-comparator success claim.
 
 ## Stronger Comparator Gap
 
