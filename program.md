@@ -63,6 +63,17 @@ Recommended initial contracts:
 - `RewardDistributor`
 - `MerkleClaimer`
 
+Chosen next expansion target after the initial three:
+
+- `VaultAccounting`
+
+The vault target should stay narrow:
+
+- share accounting only
+- deterministic deposit, withdraw, and redeem paths
+- one fixed exchange-rate movement path such as `donate`
+- no strategy execution or broader protocol simulation
+
 ## Core Rule
 
 Keep the loop narrow:

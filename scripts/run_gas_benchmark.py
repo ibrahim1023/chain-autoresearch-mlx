@@ -112,7 +112,7 @@ def select_metrics(metrics: list[GasMetric], benchmark_contract: str, metric_pre
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--arena", choices=["v1", "gas_pack"], default="v1")
-    parser.add_argument("--target", choices=["TokenLedger", "RewardDistributor", "MerkleClaimer"])
+    parser.add_argument("--target", choices=["TokenLedger", "RewardDistributor", "MerkleClaimer", "VaultAccounting"])
     parser.add_argument("--benchmark-suite", choices=["current", "manual"], default="current")
     args = parser.parse_args()
 

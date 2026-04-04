@@ -86,7 +86,8 @@ Known Gaps:
 - The worktree still has unrelated `.gitignore` changes and generated snapshot files that were intentionally left out of commits.
 
 Next Best Steps:
-- Keep the broader-success decision at "not yet" until more than one realistic contract pattern shows a kept win.
-- Define what extra evidence is needed beyond the current one-winner-two-flat result spread.
-- Define stronger manual comparators beyond the current repository baseline policy.
-- After that decision, revisit whether V3 should expand toward security or invariant discovery.
+- Keep the stronger-comparator claim boundary limited to the current fixed pack.
+- Define the fourth gas-pack target explicitly as `VaultAccounting`.
+- `VaultAccounting` now has a real local baseline with correctness tests, invariant checks, and benchmark wiring.
+- `VaultAccounting` now also has an initial kept improvement from `480638` to `464831`.
+- Continue the `VaultAccounting` keep-or-discard search pass from that kept state before moving to a stronger comparator or a new arena.

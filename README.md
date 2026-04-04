@@ -74,6 +74,17 @@ Recommended initial contract set:
 
 The goal is still to keep the research loop narrow. Even within a pack, each search pass should edit only one contract at a time.
 
+The chosen next expansion target is:
+
+- `VaultAccounting`, a narrow share-based vault accounting contract
+
+That next tranche is definition-first:
+
+- fix the API and rounding policy
+- define the benchmark cases
+- define correctness tests and invariant checks
+- only then establish the first baseline
+
 ## What V2 Currently Proves
 
 Today the repo can honestly claim:

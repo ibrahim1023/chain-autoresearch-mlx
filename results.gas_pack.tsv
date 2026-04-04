@@ -12,3 +12,8 @@ fea6933	898693	discard	inline reward claim accrual path
 0d8f59f	862368	keep	specialize setShares zero-accrual path
 fedb18f	245771	keep	inline merkle verification into claim
 cdf7283	236051	keep	make merkle root immutable
+d796faa	0	crash	baseline VaultAccounting gas_pack scaffold
+d796faa	517650	keep	baseline VaultAccounting gas_pack scaffold
+d796faa	473692	keep	baseline VaultAccounting dedicated files
+d796faa	480638	keep	baseline VaultAccounting donate guard
+d796faa	464831	keep	cache withdraw numerator and unchecked additions

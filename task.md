@@ -74,7 +74,7 @@ Current decision:
 
 - [x] Define the fixed benchmark scenarios for each V2 contract.
 - [x] Define stronger correctness tests for each V2 contract.
-- [ ] Add invariant checks where practical.
+- [x] Add invariant checks where practical.
 - [x] Define the primary metric aggregation rule across benchmark calls.
 - [x] Decide whether V2 should also report per-case gas, worst-case gas, and bytecode size as secondary outputs.
 - [x] Keep the keep-or-discard rule anchored to one primary metric.
@@ -100,6 +100,10 @@ Current V2 benchmark definition:
   - per-case gas
   - worst-case gas
   - optional bytecode size
+- invariant coverage now exists for all three initial gas-pack contracts:
+  - `test/gas_pack/TokenLedgerInvariant.t.sol`
+  - `test/gas_pack/RewardDistributorInvariant.t.sol`
+  - `test/gas_pack/MerkleClaimerInvariant.t.sol`
 - snapshot note:
   - use `forge snapshot --offline` for local gas-pack snapshots in this environment
 
@@ -136,7 +140,7 @@ Current first V2 baseline:
   - `testGasTokenLedgerMintBatch32`: `1155085`
   - `testGasTokenLedgerTransferFanout8`: `515968`
 - invariants:
-  - none implemented yet, so correctness currently means compilation plus target-specific tests plus benchmark metric extraction
+  - implemented later as part of phase 8 and now required for valid current V2 claims
 
 ## 7. Run The First V2 Search Pass
 
@@ -161,8 +165,8 @@ Current first V2 search-pass summary:
   - code state restored to the kept path after discards
   - results log retained all attempts in `results.gas_pack.tsv`
 - interpretation:
-  - V2 is already more credible than V1 in the limited sense that the optimization is happening on a more realistic contract pattern than the toy single-contract arena
-  - V2 is not yet strongly credible because invariant coverage is still missing and only one contract has been searched so far
+  - this first pass established the initial proof that V2 could produce a kept win on a realistic contract pattern
+  - later phases extended that result to the full initial pack with invariant-style validation and stronger-comparator evidence
 
 ## 8. Strengthen Validation
 
@@ -176,10 +180,12 @@ This phase is what should make V2 more defensible than V1.
 Current invariant coverage:
 
 - `TokenLedger` now has a dedicated invariant-style harness in `test/gas_pack/TokenLedgerInvariant.t.sol`
-- the runner executes that invariant step for `--arena gas_pack --target TokenLedger`
+- `RewardDistributor` now has a dedicated invariant-style harness in `test/gas_pack/RewardDistributorInvariant.t.sol`
+- `MerkleClaimer` now has a dedicated invariant-style harness in `test/gas_pack/MerkleClaimerInvariant.t.sol`
+- the runner executes the target-specific invariant step for each current `gas_pack` contract
 - invariant failure is surfaced as `reason: invariant_failure`
 - invariant timeout is surfaced as `reason: invariant_timeout`
-- `RewardDistributor` and `MerkleClaimer` still need comparable invariant coverage later
+- invariant success is now part of the required validation surface for all three current gas-pack targets
 
 ## 9. Keep The Arena Narrow
 
@@ -223,25 +229,33 @@ Current phase 10 definition:
 Current phase 11 wrap-up:
 
 - current branch head:
-  - `1d81d05`
+  - `d796faa`
 - best kept V2 optimization commit:
-  - `ee43f7a`
-- best kept V2 result:
-  - target: `TokenLedger`
+  - `cdf7283`
+- best kept V2 pack results:
+  - `TokenLedger`
   - best `median_gas`: `813699`
   - baseline `median_gas`: `835526`
   - net improvement: `21827`
+  - `RewardDistributor`
+  - best `median_gas`: `862368`
+  - baseline `median_gas`: `887232`
+  - net improvement: `24864`
+  - `MerkleClaimer`
+  - best `median_gas`: `236051`
+  - baseline `median_gas`: `250228`
+  - net improvement: `14177`
 - what this proves:
-  - the repo has a working V2 gas-pack loop with a real kept improvement on a more realistic contract pattern than V1
-  - stronger validation now exists for that target through invariant-style checking
+  - the repo has a working V2 gas-pack loop with kept wins across all three initial realistic contract patterns
+  - stronger validation now exists across the pack through invariant-style checking
+  - all three current gas-pack targets beat their frozen stronger manual comparators
 - what this does not prove:
-  - broad success across realistic contract patterns
-  - superiority over explicit manual baselines
+  - superiority over stronger manual comparators beyond the current fixed pack
   - a generally reliable autonomous blockchain research system
 - next strongest contract to add or search:
-  - `RewardDistributor`
+  - a fourth realistic contract pattern, starting with vault-style accounting
 - suggested tranche commit message:
-  - `feat: complete initial gas_pack v2 tranche`
+  - `feat: finish stronger-comparator gas_pack tranche`
 
 ## 12. Achieve Broader Success Across Realistic Contract Patterns
 
@@ -566,13 +580,96 @@ The repo should not add breadth just to avoid the remaining harder comparison.
 
 ### 15.1 Expansion decision
 
-- [ ] Decide whether the next move should be:
+- [x] Decide whether the next move should be:
   - adding a fourth realistic contract pattern
   - or strengthening comparator quality further for the current three
-- [ ] If a fourth contract is added, define it explicitly before implementation.
-- [ ] Do not start that expansion until the current stronger-comparator claim boundary is settled.
+- [x] If a fourth contract is added, define it explicitly before implementation.
+- [x] Do not start that expansion until the current stronger-comparator claim boundary is settled.
 
 Suggested expansion candidates once phase 14 is complete:
 
 - a vault-style accounting contract
 - a staking or delegation accounting contract
+
+Current expansion decision:
+
+- decision:
+  - add a fourth realistic contract pattern before deepening comparator quality further for the current three
+- reason:
+  - the current fixed pack has already cleared the stronger-comparator bar
+  - the higher-value next evidence is breadth across one more realistic pattern, not more refinement inside the same three
+  - vault-style accounting was already the leading deferred candidate from the initial V2 pack decision
+- chosen fourth contract pattern:
+  - a vault-style accounting contract
+- immediate next tranche:
+  - define the vault contract benchmark cases, correctness tests, and invariant surface before implementation
+- scope guard:
+  - do not start ZK or other new arena work until the fourth-contract gas-pack definition is written down
+
+## 16. Define The Fourth Gas-Pack Target
+
+This phase defines the next realistic contract pattern without pretending it is already implemented.
+
+The point is to keep the repo narrow while making the fourth target concrete enough to build and benchmark cleanly.
+
+### 16.1 VaultAccounting target definition
+
+- [x] Choose the explicit fourth target name.
+- [x] Decide whether the fourth target should be a narrow accounting vault or a broader ERC4626-style framework.
+- [x] Define the fixed contract surface before implementation.
+- [x] Define the benchmark shape before implementation.
+- [x] State the main scope restrictions that keep the vault tranche interpretable.
+
+Current `VaultAccounting` definition:
+
+- target name:
+  - `VaultAccounting`
+- target shape:
+  - a narrow share-based vault accounting contract
+- fixed contract surface:
+  - `deposit(address account, uint256 assets)`
+  - `withdraw(address account, uint256 assets)`
+  - `redeem(address account, uint256 shares)`
+  - one explicit exchange-rate movement path such as `donate(uint256 assets)`
+- benchmark shape:
+  - bootstrap deposit into an empty vault
+  - deposit after exchange-rate movement
+  - partial withdraw against an existing position
+  - full redeem after exchange-rate movement
+- scope restrictions:
+  - no strategy integration
+  - no allowances or transfer layer
+  - no fee logic
+  - no rebasing behavior
+  - keep one editable target per search pass
+
+### 16.2 VaultAccounting implementation tranche
+
+- [x] Add `contracts/gas_pack/VaultAccounting.sol`.
+- [x] Add `test/gas_pack/VaultAccounting.t.sol`.
+- [x] Add `test/gas_pack/VaultAccountingInvariant.t.sol`.
+- [x] Add fixed `testGasVaultAccounting...` benchmark cases to `test/gas_pack/GasPackBenchmark.t.sol`.
+- [x] Extend `scripts/run_gas_experiment.py` to accept `--target VaultAccounting`.
+- [x] Extend `scripts/run_gas_benchmark.py` to accept `--target VaultAccounting`.
+- [x] Record the first `VaultAccounting` baseline in `results.gas_pack.tsv`.
+- [x] Only begin the first `VaultAccounting` keep-or-discard search pass after that baseline is real.
+
+Implementation notes:
+
+- keep the rounding policy explicit and fixed before benchmarking
+- treat exchange-rate movement as a deterministic accounting path, not a live strategy integration
+- the runner now points at the dedicated `VaultAccounting` contract/test/invariant files already present in the workspace
+- current validated baseline for the active vault definition:
+  - commit anchor: `d796faa`
+  - `median_gas = 480638`
+  - worst case:
+    - `testGasVaultAccountingWithdrawExactAssets = 490816`
+- first kept `VaultAccounting` search-pass result:
+  - description:
+    - `cache withdraw numerator and unchecked additions`
+  - improved `median_gas`:
+    - `464831`
+  - improvement:
+    - `15807`
+- append-only vault baseline history currently includes earlier scaffold and pre-guard entries
+- manual comparator files are deferred until the fourth target baseline exists

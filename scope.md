@@ -117,8 +117,9 @@ The repo should not yet claim:
 
 The next work needed for a stronger claim is:
 
-- improve the remaining contract patterns that do not yet beat frozen stronger manual comparators
-- then expand the pack or repeat the result on additional realistic contract patterns
+- expand the pack to one additional realistic contract pattern with the same fixed validation and benchmark discipline
+- the chosen next pattern is a narrow vault-style accounting target named `VaultAccounting`
+- establish a real baseline and search pass on that fourth target before making stronger breadth claims
 - show that the wins remain credible against a stronger comparison bar across the whole pack
 
 ## Manual Baseline Policy
@@ -250,6 +251,35 @@ During a normal search pass, one editable target should be selected, for example
 - `contracts/gas_pack/TokenLedger.sol`
 - `contracts/gas_pack/RewardDistributor.sol`
 - `contracts/gas_pack/MerkleClaimer.sol`
+- `contracts/gas_pack/VaultAccounting.sol`
+
+### Next Target Definition
+
+The next gas-pack expansion target is:
+
+- `VaultAccounting`
+
+It should remain intentionally narrow:
+
+- share-based vault accounting only
+- no strategy integration
+- no allowances or transfer layer
+- no fee logic
+- no rebasing behavior
+
+The fixed accounting shape should be:
+
+- `deposit(address account, uint256 assets)`
+- `withdraw(address account, uint256 assets)`
+- `redeem(address account, uint256 shares)`
+- one explicit exchange-rate movement path such as `donate(uint256 assets)`
+
+The benchmark should stay focused on common accounting hot spots:
+
+- bootstrap deposit into an empty vault
+- deposit after exchange-rate movement
+- partial withdraw against an existing position
+- full redeem of a position after exchange-rate movement
 
 ### Fixed Surface
 

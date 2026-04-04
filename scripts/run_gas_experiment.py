@@ -77,6 +77,7 @@ def resolve_arena_config(arena: str, target: str | None) -> ArenaConfig:
         "TokenLedger": "test/gas_pack/TokenLedger.t.sol",
         "RewardDistributor": "test/gas_pack/RewardDistributor.t.sol",
         "MerkleClaimer": "test/gas_pack/MerkleClaimer.t.sol",
+        "VaultAccounting": "test/gas_pack/VaultAccounting.t.sol",
     }
     if target not in target_to_test_path:
         valid_targets = ", ".join(sorted(target_to_test_path))
@@ -90,6 +91,12 @@ def resolve_arena_config(arena: str, target: str | None) -> ArenaConfig:
             "TokenLedger": ["forge", "test", "--match-path", "test/gas_pack/TokenLedgerInvariant.t.sol"],
             "RewardDistributor": ["forge", "test", "--match-path", "test/gas_pack/RewardDistributorInvariant.t.sol"],
             "MerkleClaimer": ["forge", "test", "--match-path", "test/gas_pack/MerkleClaimerInvariant.t.sol"],
+            "VaultAccounting": [
+                "forge",
+                "test",
+                "--match-path",
+                "test/gas_pack/VaultAccountingInvariant.t.sol",
+            ],
         }.get(target),
         snapshot_cmd=[
             "forge",
@@ -201,7 +208,7 @@ def print_success(config: ArenaConfig, metrics: list[GasMetric]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--arena", choices=["v1", "gas_pack"], default="v1")
-    parser.add_argument("--target", choices=["TokenLedger", "RewardDistributor", "MerkleClaimer"])
+    parser.add_argument("--target", choices=["TokenLedger", "RewardDistributor", "MerkleClaimer", "VaultAccounting"])
     parser.add_argument("--test-timeout-seconds", type=int, default=60)
     parser.add_argument("--benchmark-timeout-seconds", type=int, default=60)
     parser.add_argument("--append-results", action="store_true")
