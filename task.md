@@ -682,19 +682,34 @@ It should not interfere with the ongoing `gas_pack` search loop, but it should m
 
 ### 17.1 Choose The ZK Arena Shape
 
-- [ ] Decide whether the first ZK arena should optimize:
+- [x] Decide whether the first ZK arena should optimize:
   - verifier gas
   - proving time
   - or constraint count
-- [ ] Keep the first ZK arena to one proof-system family only.
-- [ ] Keep the first ZK arena to one editable target per pass.
-- [ ] Choose one primary metric only.
+- [x] Keep the first ZK arena to one proof-system family only.
+- [x] Keep the first ZK arena to one editable target per pass.
+- [x] Choose one primary metric only.
 
 Recommended default:
 
 - first ZK arena: `zk_verifier_pack`
 - proof-system scope: one verifier family only
 - primary metric: median gas across a fixed verification benchmark suite
+
+Current phase 17.1 decision:
+
+- first ZK arena:
+  - `zk_verifier_pack`
+- optimization mode:
+  - verifier gas
+- proof-system scope:
+  - one verifier family only
+- editable surface:
+  - one verifier contract or verifier helper target per pass
+- primary metric:
+  - median gas across a fixed local verification benchmark suite
+- reason:
+  - this is the closest ZK analogue to the current `gas_pack` model and preserves local deterministic benchmarking
 
 ### 17.2 Define The ZK Validation Surface
 

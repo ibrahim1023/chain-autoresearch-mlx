@@ -376,6 +376,10 @@ That future arena should stay narrow:
 - fixed valid and invalid proof fixtures
 - no remote prover dependencies
 
+The current recommended first ZK choice is:
+
+- optimize verifier gas first, not proving time or constraint count
+
 ## Relationship To Existing Files
 
 The repository still contains legacy MLX-era material.

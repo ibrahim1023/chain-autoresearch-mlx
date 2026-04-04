@@ -153,6 +153,10 @@ Recommended shape:
 - primary metric: verifier `median_gas`
 - correctness gate: valid proofs accept and invalid proofs reject
 
+Current recommendation:
+
+- start with verifier gas, not proving time or constraint count
+
 That keeps the work aligned with the repo's current autoresearch model instead of widening into broad ZK protocol work too early.
 
 ## Stronger Comparator Gap

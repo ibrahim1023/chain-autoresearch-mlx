@@ -92,3 +92,4 @@ Next Best Steps:
 - `VaultAccounting` now also has an initial kept improvement from `480638` to `464831`.
 - Continue the `VaultAccounting` keep-or-discard search pass from that kept state before moving to a stronger comparator or a new arena.
 - For the next arena after gas work, the leading future candidate is a narrow `zk_verifier_pack` verifier-gas arena rather than broad ZK research.
+- The ZK arena-shape decision is now set: verifier gas first, one verifier family only, one editable target per pass.
