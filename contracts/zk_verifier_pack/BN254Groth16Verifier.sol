@@ -15,32 +15,22 @@ contract BN254Groth16Verifier {
         uint256[2] Y;
     }
 
-    struct VerifyingKey {
-        G1Point alpha1;
-        G2Point beta2;
-        G2Point gamma2;
-        G2Point delta2;
-        G1Point ic0;
-        G1Point ic1;
-    }
-
     function verifyProof(
         uint256[1] calldata publicInputs,
         G1Point calldata proofA,
         G2Point calldata proofB,
         G1Point calldata proofC
     ) external view returns (bool verified) {
-        VerifyingKey memory vk = _verifyingKey();
-
-        (bool ok, G1Point memory vkX) = _linearCombination(vk, publicInputs[0]);
+        G2Point memory beta2 = _beta2();
+        (bool ok, G1Point memory expectedProofA) = _scalarMul(_g1Generator(), publicInputs[0]);
         if (!ok) {
             return false;
         }
 
-        if (!_sameG1(proofA, vkX)) {
+        if (!_sameG1(proofA, expectedProofA)) {
             return false;
         }
-        if (!_sameG2(proofB, vk.beta2)) {
+        if (!_sameG2(proofB, beta2)) {
             return false;
         }
         if (proofC.X != 0 || proofC.Y != 0) {
@@ -49,21 +39,16 @@ contract BN254Groth16Verifier {
 
         // Keep a real BN254 pairing precompile in the first scaffold so the arena
         // measures verifier-style cryptographic work while fixtures remain frozen.
-        return _pairing(
+        return _pairing2(
             proofA,
             proofB,
             _negate(proofA),
-            proofB,
-            G1Point(0, 0),
-            vk.delta2,
-            G1Point(0, 0),
-            vk.beta2
+            beta2
         );
     }
 
-    function _verifyingKey() internal pure returns (VerifyingKey memory vk) {
-        vk.alpha1 = G1Point(0, 0);
-        vk.beta2 = G2Point(
+    function _beta2() internal pure returns (G2Point memory point) {
+        point = G2Point(
             [
                 11559732032986387107991004021392285783925812861821192530917403151452391805634,
                 10857046999023057135944570762232829481370756359578518086990519993285655852781
@@ -73,50 +58,10 @@ contract BN254Groth16Verifier {
                 8495653923123431417604973247489272438418190587263600148770280649306958101930
             ]
         );
-        vk.gamma2 = vk.beta2;
-        vk.delta2 = vk.beta2;
-        vk.ic0 = G1Point(0, 0);
-        vk.ic1 = G1Point(1, 2);
     }
 
-    function _linearCombination(VerifyingKey memory vk, uint256 publicInput)
-        internal
-        view
-        returns (bool ok, G1Point memory result)
-    {
-        if (publicInput == 0) {
-            result = vk.ic0;
-            return (true, result);
-        }
-
-        (bool mulOk, G1Point memory mulResult) = _scalarMul(vk.ic1, publicInput);
-        if (!mulOk) {
-            return (false, result);
-        }
-
-        return _addition(vk.ic0, mulResult);
-    }
-
-    function _addition(G1Point memory p1, G1Point memory p2)
-        internal
-        view
-        returns (bool ok, G1Point memory result)
-    {
-        uint256[] memory input = new uint256[](4);
-        input[0] = p1.X;
-        input[1] = p1.Y;
-        input[2] = p2.X;
-        input[3] = p2.Y;
-
-        uint256[2] memory output;
-        assembly {
-            ok := staticcall(gas(), 6, add(input, 0x20), 0x80, output, 0x40)
-        }
-        if (!ok) {
-            return (false, result);
-        }
-
-        result = G1Point(output[0], output[1]);
+    function _g1Generator() internal pure returns (G1Point memory point) {
+        point = G1Point(1, 2);
     }
 
     function _scalarMul(G1Point memory p, uint256 scalar)
@@ -140,26 +85,19 @@ contract BN254Groth16Verifier {
         result = G1Point(output[0], output[1]);
     }
 
-    function _pairing(
-        G1Point memory a1,
-        G2Point memory a2,
-        G1Point memory b1,
-        G2Point memory b2,
-        G1Point memory c1,
-        G2Point memory c2,
-        G1Point memory d1,
-        G2Point memory d2
-    ) internal view returns (bool verified) {
-        uint256[] memory input = new uint256[](24);
+    function _pairing2(G1Point memory a1, G2Point memory a2, G1Point memory b1, G2Point memory b2)
+        internal
+        view
+        returns (bool verified)
+    {
+        uint256[] memory input = new uint256[](12);
         _appendPair(input, 0, a1, a2);
         _appendPair(input, 6, b1, b2);
-        _appendPair(input, 12, c1, c2);
-        _appendPair(input, 18, d1, d2);
 
         uint256[1] memory output;
         bool success;
         assembly {
-            success := staticcall(gas(), 8, add(input, 0x20), 0x300, output, 0x20)
+            success := staticcall(gas(), 8, add(input, 0x20), 0x180, output, 0x20)
         }
         if (!success) {
             return false;

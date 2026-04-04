@@ -1,102 +1,68 @@
 # Context Anchor
 
-Date: 2026-04-02
+Date: 2026-04-04
 
 Project:
 - Name: chain-autoresearch
 - Purpose: Build a deterministic local blockchain autoresearch harness that can optimize realistic smart-contract implementations for gas under strong correctness constraints.
 
 Current Status:
-- Phase: Multi-contract evidence consolidation after completing initial tranches for `TokenLedger`, `RewardDistributor`, and `MerkleClaimer`.
-- Current branch: `codex-gas-pack-v2`
-- Current HEAD: `643393d`
-- Honest repo state: working V2 infrastructure with multi-contract validation and baseline coverage, but not yet broad success across realistic contract patterns.
+- Phase: First real `zk_verifier_pack` optimization pass after the verifier scaffold and baseline.
+- Current branch: `codex/zk-verifier-v3`
+- Current HEAD: `5672957`
+- Honest repo state: working V2 gas-pack infrastructure on `main`, plus a narrow ZK verifier-gas arena on the V3 branch with one real kept post-baseline improvement.
 
-Completed In This Tranche:
-- Aligned `AGENTS.md`, `program.md`, `README.md`, and `task.md` with the V2 `gas_pack` direction.
-- Added V2 scaffold contracts:
-  - `contracts/gas_pack/TokenLedger.sol`
-  - `contracts/gas_pack/RewardDistributor.sol`
-  - `contracts/gas_pack/MerkleClaimer.sol`
-- Added V2 correctness tests and a fixed benchmark contract:
-  - `test/gas_pack/TokenLedger.t.sol`
-  - `test/gas_pack/RewardDistributor.t.sol`
-  - `test/gas_pack/MerkleClaimer.t.sol`
-  - `test/gas_pack/GasPackBenchmark.t.sol`
-- Generalized the runner for V1 and V2 target-specific execution:
-  - `scripts/run_gas_experiment.py`
-  - `scripts/run_gas_benchmark.py`
-- Recorded the first V2 baseline in `results.gas_pack.tsv`.
-- Completed the first V2 search pass on `TokenLedger`.
-- Added invariant-style validation for `TokenLedger` in `test/gas_pack/TokenLedgerInvariant.t.sol`.
-- Added invariant-style validation for `RewardDistributor` in `test/gas_pack/RewardDistributorInvariant.t.sol`.
-- Added invariant-style validation for `MerkleClaimer` in `test/gas_pack/MerkleClaimerInvariant.t.sol`.
-- Documented the meaningful-result bar and narrow-arena discipline.
-- Added a broader-success roadmap to `task.md`.
+- Completed the V2 `gas_pack` work on `main`, including `VaultAccounting` and an initial kept vault improvement.
+- Defined the V3 ZK direction as a narrow verifier-gas arena on `codex/zk-verifier-v3`.
+- Added the first ZK verifier scaffold:
+  - `contracts/zk_verifier_pack/BN254Groth16Verifier.sol`
+  - `test/zk_verifier_pack/ZKVerifierFixtures.sol`
+  - `test/zk_verifier_pack/BN254Groth16Verifier.t.sol`
+  - `test/zk_verifier_pack/BN254Groth16VerifierRejection.t.sol`
+  - `test/zk_verifier_pack/ZKVerifierPackBenchmark.t.sol`
+- Added dedicated ZK runners:
+  - `scripts/run_zk_verifier_benchmark.py`
+  - `scripts/run_zk_verifier_experiment.py`
+- Recorded the first ZK baseline in `results.zk_verifier_pack.tsv`.
+- Kept the first real ZK verifier optimization result after validation.
 
-Best V2 Result So Far:
-- Target: `TokenLedger`
-- Best kept optimization commit: `ee43f7a`
-- Best kept description: `load mintBatch inputs from calldata`
-- Baseline `median_gas`: `835526`
-- Best kept `median_gas`: `813699`
-- Improvement: `21827`
+Best ZK Result So Far:
+- Target: `BN254Groth16Verifier`
+- Best kept optimization commit: `5672957`
+- Best kept description: `inline fixed verifier constants and reduce pairing work`
+- Baseline `median_gas`: `223677`
+- Best kept `median_gas`: `150360`
+- Improvement: `73317`
 
-V2 Attempt History:
-- `5520615` - keep - `baseline TokenLedger gas_pack v2`
-- `be71b13` - discard - `unchecked mintBatch loop increment`
-- `ee43f7a` - keep - `load mintBatch inputs from calldata`
-- `9261f83` - discard - `add single-mint fast path`
-- `ffa7fae` - keep - `baseline RewardDistributor gas_pack v2`
-- `c26833e` - discard - `cache reward accumulator in setShares`
-- `e590b35` - discard - `unchecked setShares loop increment`
-- `11f5a1f` - keep - `baseline MerkleClaimer gas_pack v2`
-- `71852b2` - discard - `unchecked merkle proof loop increment`
+ZK Attempt History:
+- `6f4c816` - keep - `baseline BN254Groth16Verifier zk_verifier_pack v1`
+- `5672957` - keep - `inline fixed verifier constants and reduce pairing work`
 
-Cross-Contract Status:
-- `TokenLedger`
-  - baseline: `835526`
-  - best kept: `813699`
-  - outcome: beat current repository manual baseline
-- `RewardDistributor`
-  - baseline: `887232`
-  - best kept: `887232`
-  - outcome: flat so far
-- `MerkleClaimer`
-  - baseline: `250228`
-  - best kept: `250228`
-  - outcome: flat so far
+Current ZK Arena Status:
+- `BN254Groth16Verifier`
+  - baseline: `223677`
+  - best kept: `150360`
+  - outcome: first real post-baseline ZK verifier-gas win
 
 What The Current State Proves:
-- The repo can run a realistic V2 gas-pack loop on multiple selected contracts.
-- The repo can keep or discard changes against fixed local benchmarks.
-- The repo can enforce stronger validation than V1 for all three current gas-pack contracts through invariant-style harnesses.
-- The repo has at least one real V2 gas win on a more realistic contract pattern than the V1 toy arena.
-- The repo can now report honest flat results instead of only reporting winners.
+- The repo can run a narrow local ZK verifier-gas arena end to end.
+- The repo can keep or discard verifier changes against fixed valid and invalid fixtures.
+- The repo can preserve semantic validation while improving accepted verification gas.
+- The repo now has one real kept ZK improvement after a recorded baseline, not only planning docs.
 
 What It Does Not Yet Prove:
-- Broad success across realistic contract patterns.
-- Wins over stronger manual baselines beyond the repository reference implementations.
-- A generally reliable autonomous blockchain optimizer.
+- Broad success across ZK verifier families.
+- Wins against stronger manual expert comparators for verifier implementations.
+- A generally reliable autonomous blockchain optimizer across gas and ZK arenas.
 
 Known Gaps:
-- Only `TokenLedger` has a kept improvement so far.
-- The current manual baseline policy is still repo-internal rather than an external expert comparator.
-- A broader-success decision has not yet been written into the main docs.
-- The worktree still has unrelated `.gitignore` changes and generated snapshot files that were intentionally left out of commits.
+- The ZK arena still has only one verifier family and one target.
+- The current verifier is a narrow local scaffold rather than a full generated production verifier pipeline.
+- The stronger-comparator bar for ZK has not yet been defined beyond the repo baseline.
+- The branch still needs more than one keep/discard attempt before any broader claim would be credible.
 
 Next Best Steps:
-- Keep the stronger-comparator claim boundary limited to the current fixed pack.
-- Define the fourth gas-pack target explicitly as `VaultAccounting`.
-- `VaultAccounting` now has a real local baseline with correctness tests, invariant checks, and benchmark wiring.
-- `VaultAccounting` now also has an initial kept improvement from `480638` to `464831`.
-- Continue the `VaultAccounting` keep-or-discard search pass from that kept state before moving to a stronger comparator or a new arena.
-- For the next arena after gas work, the leading future candidate is a narrow `zk_verifier_pack` verifier-gas arena rather than broad ZK research.
-- The ZK arena-shape decision is now set: verifier gas first, one verifier family only, one editable target per pass.
-- The ZK validation-surface decision is now set: freeze `2` valid fixtures and `3` invalid fixtures, and keep them fixed across any future verifier-gas search pass.
-- The current recommended first ZK target is a full BN254 Groth16-style verifier contract.
-- The ZK meaningful-result bar is now explicit: gas must improve while the frozen valid and invalid fixtures keep the same verification outcomes.
-- The first ZK scaffold layout is now set around `BN254Groth16Verifier`, `ZKVerifierFixtures.sol`, a dedicated rejection test file, a benchmark contract, and dedicated ZK runner scripts.
-- The first ZK artifact decision is now set: Solidity-struct fixtures, a single `verifyProof(...)` entrypoint, and `2` fixed valid benchmark cases plus `3` rejection cases.
-- The first ZK runner pair is now scaffolded in `scripts/run_zk_verifier_benchmark.py` and `scripts/run_zk_verifier_experiment.py`.
-- The first real ZK verifier scaffold now exists and has a recorded local baseline in `results.zk_verifier_pack.tsv` with `median_gas = 223677`.
+- Continue the `BN254Groth16Verifier` keep-or-discard loop from the new kept state at `150360`.
+- Add at least one discard attempt or additional kept result so the ZK arena has a real early frontier rather than a single jump.
+- Define the first stronger manual comparator policy for `zk_verifier_pack` after a few local attempts exist.
+- Keep the ZK arena narrow until the verifier-gas loop is clearly repeatable.

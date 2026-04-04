@@ -1152,3 +1152,32 @@ Current first ZK baseline:
   - benchmark passes
   - ZK benchmark runner passes
   - ZK experiment runner passes
+
+## 22. Run The First ZK Search Pass
+
+- [x] Choose one ZK verifier target as the first optimization target.
+- [x] Run a disciplined keep-or-discard loop on that verifier only.
+- [x] Record at least one real keep-or-discard result in `results.zk_verifier_pack.tsv`.
+- [x] Keep the frozen valid and invalid fixtures unchanged during the pass.
+- [x] Confirm the first kept ZK win still preserves the full validation surface.
+
+Current first ZK search-pass summary:
+
+- target:
+  - `BN254Groth16Verifier`
+- baseline start:
+  - `223677`
+- first kept improvement:
+  - commit: `5672957`
+  - description: `inline fixed verifier constants and reduce pairing work`
+  - improved `median_gas`: `150360`
+- net improvement:
+  - `73317`
+- validation status:
+  - correctness tests pass
+  - rejection tests pass
+  - benchmark passes
+  - ZK experiment runner passes
+- interpretation:
+  - the repo now has a real first kept ZK verifier-gas improvement rather than only a scaffold and baseline
+  - the current ZK arena remains narrow: one verifier family, one verifier target, one gas metric, and frozen valid/invalid fixtures
