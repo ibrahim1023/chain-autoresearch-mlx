@@ -93,3 +93,4 @@ Next Best Steps:
 - Continue the `VaultAccounting` keep-or-discard search pass from that kept state before moving to a stronger comparator or a new arena.
 - For the next arena after gas work, the leading future candidate is a narrow `zk_verifier_pack` verifier-gas arena rather than broad ZK research.
 - The ZK arena-shape decision is now set: verifier gas first, one verifier family only, one editable target per pass.
+- The ZK validation-surface decision is now set: freeze `2` valid fixtures and `3` invalid fixtures, and keep them fixed across any future verifier-gas search pass.

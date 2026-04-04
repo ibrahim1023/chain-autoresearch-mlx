@@ -713,14 +713,36 @@ Current phase 17.1 decision:
 
 ### 17.2 Define The ZK Validation Surface
 
-- [ ] Freeze a small valid-proof fixture set.
-- [ ] Freeze a small invalid-proof fixture set.
-- [ ] Define the correctness rule:
+- [x] Freeze a small valid-proof fixture set.
+- [x] Freeze a small invalid-proof fixture set.
+- [x] Define the correctness rule:
   - valid proofs must verify
   - invalid proofs must fail
-- [ ] Keep those fixtures fixed during any future ZK search pass.
+- [x] Keep those fixtures fixed during any future ZK search pass.
 
 The point is to prevent fake wins that only weaken verification logic.
+
+Current phase 17.2 validation decision:
+
+- valid-proof fixtures:
+  - freeze `2` fixed valid fixtures for the first verifier family
+  - one should be the baseline benchmark path used for gas measurement
+  - one should be a second accepted case with different public inputs to prevent overfitting to a single fixture
+- invalid-proof fixtures:
+  - freeze `3` fixed invalid fixtures
+  - invalid category 1:
+    - wrong public inputs paired with an otherwise valid-looking proof
+  - invalid category 2:
+    - corrupted proof bytes or points that fail verification
+  - invalid category 3:
+    - structurally malformed proof or calldata layout that must be rejected cleanly
+- correctness rule:
+  - every valid fixture must verify
+  - every invalid fixture must fail
+- fixture discipline:
+  - fixtures stay frozen during any future ZK search pass
+  - do not generate fresh proofs during benchmark runs
+  - do not depend on remote provers or nondeterministic setup steps
 
 ### 17.3 Define The First ZK Target
 

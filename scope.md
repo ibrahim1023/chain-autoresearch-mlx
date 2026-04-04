@@ -380,6 +380,14 @@ The current recommended first ZK choice is:
 
 - optimize verifier gas first, not proving time or constraint count
 
+The current recommended validation surface for that arena is:
+
+- `2` fixed valid-proof fixtures
+- `3` fixed invalid-proof fixtures
+- one valid fixture should anchor the gas benchmark path
+- one valid fixture should exercise a second accepted case with different public inputs
+- invalid fixtures should cover wrong public inputs, corrupted proof bytes or points, and malformed calldata or proof structure
+
 ## Relationship To Existing Files
 
 The repository still contains legacy MLX-era material.

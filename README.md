@@ -156,6 +156,7 @@ Recommended shape:
 Current recommendation:
 
 - start with verifier gas, not proving time or constraint count
+- freeze a tiny fixture set up front rather than generating proofs during runs
 
 That keeps the work aligned with the repo's current autoresearch model instead of widening into broad ZK protocol work too early.
 
