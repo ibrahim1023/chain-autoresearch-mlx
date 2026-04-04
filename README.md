@@ -183,14 +183,6 @@ not yet:
 
 - beat stronger human gas-aware implementations beyond the current fixed gas-pack
 
-## Repository Anchors
-
-- `scope.md`: source of truth for project direction
-- `task.md`: active V2 checklist
-- `program.md`: operating procedure for the blockchain arena
-- `AGENTS.md`: contributor and agent working rules
-- `context.md`: session continuity anchor when present
-
 ## Legacy Files
 
 The repository still contains MLX-era files such as:
