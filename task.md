@@ -746,11 +746,11 @@ Current phase 17.2 validation decision:
 
 ### 17.3 Define The First ZK Target
 
-- [ ] Choose the first editable target explicitly.
-- [ ] Decide whether it should be:
+- [x] Choose the first editable target explicitly.
+- [x] Decide whether it should be:
   - a full verifier contract
   - or a verifier helper / proof-decoding helper
-- [ ] Record why that target is the highest-signal first hotspot.
+- [x] Record why that target is the highest-signal first hotspot.
 
 Recommended default:
 
@@ -759,11 +759,30 @@ Recommended default:
 - reason:
   - it fits the existing local benchmark-and-keep/discard model better than a prover or circuit arena
 
+Current phase 17.3 target decision:
+
+- first editable target:
+  - a full verifier contract
+- verifier family:
+  - one BN254 Groth16-style verifier family only
+- reason:
+  - a full verifier contract matches the repo's current benchmark-contract workflow better than an isolated helper
+  - it preserves end-to-end verification semantics while still keeping the editable surface to one file per pass
+  - it gives a cleaner meaningful-result story than optimizing a helper in isolation
+
+Expected future file layout:
+
+- `contracts/zk_verifier_pack/<VerifierTarget>.sol`
+- `test/zk_verifier_pack/<VerifierTarget>.t.sol`
+- `test/zk_verifier_pack/<VerifierTarget>Invariant.t.sol`
+- `test/zk_verifier_pack/ZKVerifierPackBenchmark.t.sol`
+- `scripts/run_zk_verifier_benchmark.py`
+
 ### 17.4 Set The ZK Meaningful-Result Bar
 
-- [ ] Define what counts as a meaningful ZK result in this repo.
-- [ ] Require frozen valid/invalid fixtures before stronger ZK claims.
-- [ ] Decide when a stronger manual comparator becomes necessary for the ZK arena.
+- [x] Define what counts as a meaningful ZK result in this repo.
+- [x] Require frozen valid/invalid fixtures before stronger ZK claims.
+- [x] Decide when a stronger manual comparator becomes necessary for the ZK arena.
 
 Suggested default:
 
@@ -772,3 +791,14 @@ Suggested default:
   - valid proofs still verify
   - invalid proofs still fail
   - the benchmark and fixtures stay fixed during the pass
+
+Current phase 17.4 decision:
+
+- a meaningful first ZK result requires:
+  - improved verifier gas on a fixed local benchmark suite
+  - frozen valid and invalid fixture sets
+  - unchanged verification semantics across the pass
+  - one fixed verifying key and fixed benchmark call set during the pass
+- stronger-comparator rule:
+  - require a stronger manual comparator after the first working ZK baseline and first kept win exist
+  - the comparator should be a careful human gas-aware verifier implementation under the same frozen fixtures

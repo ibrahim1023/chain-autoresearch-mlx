@@ -157,6 +157,8 @@ Current recommendation:
 
 - start with verifier gas, not proving time or constraint count
 - freeze a tiny fixture set up front rather than generating proofs during runs
+- use a full verifier contract as the first editable target
+- treat a ZK result as meaningful only when gas improves without changing verification outcomes on the frozen fixtures
 
 That keeps the work aligned with the repo's current autoresearch model instead of widening into broad ZK protocol work too early.
 

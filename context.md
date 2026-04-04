@@ -94,3 +94,5 @@ Next Best Steps:
 - For the next arena after gas work, the leading future candidate is a narrow `zk_verifier_pack` verifier-gas arena rather than broad ZK research.
 - The ZK arena-shape decision is now set: verifier gas first, one verifier family only, one editable target per pass.
 - The ZK validation-surface decision is now set: freeze `2` valid fixtures and `3` invalid fixtures, and keep them fixed across any future verifier-gas search pass.
+- The current recommended first ZK target is a full BN254 Groth16-style verifier contract.
+- The ZK meaningful-result bar is now explicit: gas must improve while the frozen valid and invalid fixtures keep the same verification outcomes.

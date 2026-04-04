@@ -388,6 +388,17 @@ The current recommended validation surface for that arena is:
 - one valid fixture should exercise a second accepted case with different public inputs
 - invalid fixtures should cover wrong public inputs, corrupted proof bytes or points, and malformed calldata or proof structure
 
+The current recommended first ZK target is:
+
+- a full BN254 Groth16-style verifier contract
+
+The current recommended ZK meaningful-result bar is:
+
+- verifier gas improves on a fixed local benchmark
+- valid fixtures still verify
+- invalid fixtures still fail
+- the verifying key, fixtures, and benchmark calls stay fixed during the pass
+
 ## Relationship To Existing Files
 
 The repository still contains legacy MLX-era material.
