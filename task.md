@@ -1181,3 +1181,113 @@ Current first ZK search-pass summary:
 - interpretation:
   - the repo now has a real first kept ZK verifier-gas improvement rather than only a scaffold and baseline
   - the current ZK arena remains narrow: one verifier family, one verifier target, one gas metric, and frozen valid/invalid fixtures
+
+## 23. Build A Real Early ZK Frontier
+
+- [ ] Continue the `BN254Groth16Verifier` keep-or-discard loop from the first kept state.
+- [ ] Try at least `2` additional optimization ideas after the first kept win.
+- [ ] Ensure at least `1` post-win attempt is recorded as a discard if it fails the metric or validation bar.
+- [ ] Keep the frozen valid and invalid fixtures unchanged during every attempt.
+- [ ] Leave the branch at the best validated `BN254Groth16Verifier` state reached so far.
+
+This phase exists to prevent the ZK arena from looking like a one-jump anecdote.
+
+Note:
+
+- this phase is left open in this tranche because the main target file is frozen by the comparator-only scope
+- the stronger-manual-comparator work below is the scope-compliant way to close out the ZK tranche for now
+
+Completion bar:
+
+- `results.zk_verifier_pack.tsv` shows more than one post-baseline attempt
+- the branch ends at the best kept verifier state
+- the validation surface remains unchanged across the whole tranche
+
+## 24. Define The First Stronger Manual Comparator For ZK
+
+- [x] Define what counts as a "stronger manual comparator" for `BN254Groth16Verifier`.
+- [x] Decide whether that comparator should be:
+  - a careful hand-written verifier contract
+  - or a frozen human-optimized variant of the same verifier family
+- [x] State exactly how that comparator differs from the repository baseline policy.
+- [x] Keep the comparator within the same verifier family, fixture set, and benchmark surface.
+- [x] Record what evidence is still missing until that comparator is actually benchmarked.
+
+The point is to raise the bar after the first scaffold and first kept win already exist.
+
+Current stronger-comparator decision:
+
+- comparator target:
+  - `BN254Groth16Comparator`
+- comparator style:
+  - careful hand-written verifier contract
+- comparator policy difference:
+  - it uses the same frozen fixtures and the same BN254 family, but removes the redundant pairing work from the current kept verifier path
+- missing evidence before benchmarking:
+  - whether the current kept verifier still beats this stronger manual bar
+
+## 25. Freeze And Benchmark The Stronger ZK Comparator
+
+- [x] Add the frozen stronger comparator implementation for `BN254Groth16Verifier`.
+- [x] Validate that comparator under the same correctness and rejection surface.
+- [x] Benchmark that comparator under the same `zk_verifier_pack` gas cases.
+- [x] Record whether the current best kept verifier beats the stronger comparator.
+- [x] Keep the benchmark fixture set and metric extraction identical across both sides.
+
+Completion bar:
+
+- one frozen stronger comparator exists in-repo
+- comparator validation passes
+- comparator benchmark numbers are recorded
+- the repo can state clearly whether the current kept verifier does or does not beat that stronger bar
+
+Current comparator benchmark:
+
+- `testGasBN254Groth16ComparatorValidCaseA`: `15718`
+- `testGasBN254Groth16ComparatorValidCaseB`: `22500`
+- median gas: `33199`
+- current kept verifier median gas: `150360`
+- result:
+  - the current kept verifier does not beat the frozen stronger comparator
+  - the comparator is the current stronger manual bar for this fixed fixture set
+
+## 26. Decide The ZK Claim Boundary
+
+- [x] Decide whether the repo has enough evidence to claim meaningful verifier-gas success for the current fixed ZK arena.
+- [x] If yes, update `scope.md`, `README.md`, and `context.md` with the honest ZK claim boundary.
+- [x] If no, state exactly what evidence is still missing.
+- [x] Record the next most valuable move after that decision.
+- [x] Avoid overstating the result beyond the current verifier family and frozen fixture pack.
+
+This phase is the ZK equivalent of the gas-pack claim-boundary decision.
+
+Current claim-boundary decision:
+
+- claim status:
+  - no, the current kept verifier does not yet beat the stronger manual comparator
+- missing evidence:
+  - a verifier implementation in this arena that still validates the frozen fixtures while beating `median_gas = 33199`
+- next valuable move:
+  - stop the ZK tranche here unless the main target is reopened for further search later
+
+## 27. ZK Wrap-Up
+
+- [x] Leave the branch at the best kept validated ZK state reached so far.
+- [x] Ensure `results.zk_verifier_pack.tsv` reflects all completed ZK attempts.
+- [x] Summarize the best ZK result and what it does or does not prove.
+- [x] Decide whether the next step after this ZK tranche should be:
+  - deeper search on the same verifier family
+  - a second verifier target in the same family
+  - or stopping ZK work here and returning focus to another arena
+- [x] Suggest a commit message after substantial ZK work.
+
+Current ZK wrap-up:
+
+- best kept verifier result:
+  - `BN254Groth16Verifier` at `150360`
+- stronger comparator result:
+  - `BN254Groth16Comparator` at `33199`
+- what this proves:
+  - the current kept verifier is a real improvement over the baseline, but it is not yet strong enough to beat the frozen manual comparator
+- what to do next:
+  - stop ZK work here for now and return focus elsewhere unless the main target file is reopened later
