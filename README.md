@@ -1,212 +1,212 @@
 # chain-autoresearch
 
-`chain-autoresearch` is a deterministic local blockchain autoresearch repository inspired by autoresearch.
+Deterministic local autoresearch for blockchain systems.
 
-The project runs narrow keep-or-discard experiment loops against a fixed local arena:
+This repository adapts the autoresearch loop from ML-style experimentation to narrow blockchain arenas where one target is edited, benchmarked, validated, and either kept or discarded.
 
-- one arena
-- one editable target at a time
-- one primary metric
-- repeated local validation and comparison
+Original autoresearch shape:
 
-## Current Status
+- edit training code
+- run experiment
+- measure metric
+- keep or discard
 
-The repository has already completed a first blockchain V1 arena:
+Current chain-autoresearch shape:
 
-- local smart-contract gas optimization
-- one editable contract target
-- one gas benchmark suite
-- one primary gas metric
+- edit one contract target
+- run deterministic local validation and benchmark steps
+- measure one primary metric
+- keep or discard
 
-That V1 arena proved the basic local autoresearch loop works.
+## Current Scope
 
-V2 is now complete on `main`:
+The current repository is intentionally narrow:
 
-- a more realistic `gas_pack` arena with stronger correctness guarantees and more credible contract patterns
-- kept wins across the fixed contract pack
-- frozen stronger manual comparator wins across the current gas-pack targets
+- deterministic local execution
+- one editable target per search pass
+- fixed benchmark fixtures and validation surfaces
+- gas-focused smart-contract research arenas
+- strong correctness constraints
 
-## V1 Reference
+It is not yet:
 
-The implemented V1 arena centers on:
+- a general-purpose blockchain research engine
+- a broad autonomous protocol designer
+- a live-chain experimentation system
 
-- target: `contracts/GasCandidate.sol`
-- tests: `test/GasCandidate.t.sol`
-- benchmark: `test/GasBenchmark.t.sol`
-- runner: `scripts/run_gas_experiment.py`
-- primary metric: `median_gas`
+## Current Results
 
-Useful commands:
+The strongest current public claim is:
+
+- the V2 `gas_pack` arena is real
+- the initial fixed gas-pack targets have kept wins
+- those current fixed-pack wins beat frozen stronger manual comparators
+- the repo also has a real ZK verifier-gas arena
+- the current ZK verifier win does not beat its stronger comparator
+
+| Arena / Target | Baseline | Best kept | Improvement | Comparator status | Notes |
+|---|---:|---:|---:|---|---|
+| `TokenLedger` | `835526` | `813699` | `21827` | beat stronger comparator `831827` | invariant-checked |
+| `RewardDistributor` | `887232` | `862368` | `24864` | beat stronger comparator `894867` | invariant-checked |
+| `MerkleClaimer` | `250228` | `236051` | `14177` | beat stronger comparator `236456` | invariant-checked |
+| `VaultAccounting` | `480638` | `464831` | `15807` | stronger comparator not defined yet | early fourth target |
+| `BN254Groth16Verifier` | `223677` | `150360` | `73317` | does not beat stronger comparator `33199` | real ZK win, limited claim |
+
+## Why This Repo Exists
+
+Autoresearch showed that a narrow keep-or-discard loop can run repeated experiments against a fixed arena and metric.
+
+This repository applies the same pattern to blockchain systems. Instead of optimizing model loss, it currently optimizes gas usage while preserving correctness inside deterministic local benchmark environments.
+
+## What Changed From Autoresearch
+
+| Concept | autoresearch | chain-autoresearch |
+|---|---|---|
+| Domain | ML training | blockchain experimentation |
+| Editable target | training code | one contract target |
+| Primary metric | validation/training metric | `median_gas` |
+| Arena | model/data/training setup | fixed local benchmark and validation setup |
+| Keep rule | metric improvement | gas improvement without correctness regression |
+
+## How It Works
+
+1. Choose one arena and one editable target.
+2. Modify only that target during the pass.
+3. Run fixed local tests, invariants, and benchmark commands.
+4. Extract the primary metric.
+5. Keep or discard the result.
+
+```text
+edit target -> run fixed benchmark -> validate correctness -> measure gas -> keep/discard
+```
+
+## Quickstart
+
+### Requirements
+
+- Python 3.10+
+- Foundry
+
+Optional:
+
+- `uv` if you want to manage the Python environment through the checked-in `pyproject.toml`
+
+### First Run
+
+Clone the repo, then run one of the existing arena commands directly.
+
+V1 baseline arena:
 
 ```bash
 python scripts/run_gas_experiment.py
 python scripts/run_gas_benchmark.py
-forge test
 ```
 
-V1 results are logged in:
+V2 `gas_pack` benchmark for one target:
+
+```bash
+python scripts/run_gas_benchmark.py --arena gas_pack --target TokenLedger
+python scripts/run_gas_experiment.py --arena gas_pack --target TokenLedger
+```
+
+V2 manual comparator benchmark for one target:
+
+```bash
+python scripts/run_gas_benchmark.py --arena gas_pack --target TokenLedger --benchmark-suite manual
+```
+
+ZK verifier benchmark:
+
+```bash
+python scripts/run_zk_verifier_benchmark.py --arena zk_verifier_pack --target BN254Groth16Verifier
+python scripts/run_zk_verifier_experiment.py --arena zk_verifier_pack --target BN254Groth16Verifier
+```
+
+Results are recorded in:
 
 - `results.gas.tsv`
+- `results.gas_pack.tsv`
+- `results.zk_verifier_pack.tsv`
 
-Best recorded V1 result so far:
+## Arena Status
 
-- commit `e3160d8`
-- `median_gas = 1502102`
+### V2 `gas_pack`
 
-## V2 Direction
+This is the strongest completed arena in the repo today.
 
-V2 is not "more runs on the toy contract."
+What it currently supports:
 
-V2 is meant to become a more meaningful blockchain research arena by introducing:
+- one editable contract at a time
+- fixed benchmark fixtures
+- correctness tests plus invariant-style validation
+- append-only result logs
+- stronger manual comparator benchmarks for the initial fixed pack
 
-- realistic contract patterns
-- stronger correctness tests
-- invariant checks where practical
-- structured benchmark output
-
-The recommended V2 arena is:
-
-- `gas_pack`
-
-Recommended initial contract set:
+Current fixed-pack targets:
 
 - `TokenLedger`
 - `RewardDistributor`
 - `MerkleClaimer`
 
-The goal is still to keep the research loop narrow. Even within a pack, each search pass should edit only one contract at a time.
+Current expansion target:
 
-The chosen next expansion target is:
+- `VaultAccounting`
 
-- `VaultAccounting`, a narrow share-based vault accounting contract
+What the current `gas_pack` evidence supports:
 
-That tranche is already implemented with:
+- real kept wins across the initial fixed pack
+- stronger-comparator wins for those fixed-pack targets
+- a narrower credibility claim for realistic local gas optimization
 
-- contract, correctness tests, invariant checks, and benchmark wiring
-- a recorded baseline in `results.gas_pack.tsv`
-- an initial kept improvement over the vault baseline
+What it does not support yet:
 
-## What V2 Currently Proves
+- broad success beyond the current fixed pack
+- a generally reliable autonomous blockchain optimizer
 
-Today the repo can honestly claim:
+### ZK Verifier Arena
 
-- a working V2 `gas_pack` harness exists
-- all three initial gas-pack contracts have real baselines and completed search passes
-- `TokenLedger`, `RewardDistributor`, and `MerkleClaimer` each now have a kept improvement over their repository baselines
-- all three current gas-pack contracts now have invariant-style validation in addition to correctness tests
-
-That is stronger than V1, but it is still not the final research bar.
-
-## What Would Count As Meaningful
-
-A meaningful V2 result should show:
-
-- gas improvements on realistic contract patterns
-- invariant-preserving correctness
-- fixed benchmark and validation surfaces during the search
-- wins that beat obvious manual baselines
-- evidence across more than one realistic contract pattern
-
-Until then, the right description is:
-
-- working V2 infrastructure with early promising results
-
-not:
-
-- proven autonomous blockchain research
-
-## Current Cross-Contract Status
-
-The repo now has validated baseline coverage across all three initial gas-pack contracts.
-
-Using the current repository policy, the "obvious manual baseline" for each contract is the first validated readability-first implementation kept under the fixed benchmark and validation surface.
-
-Current outcomes:
-
-- `TokenLedger`: baseline `835526`, best kept `813699`, beat baseline
-- `RewardDistributor`: baseline `887232`, best kept `862368`, beat baseline
-- `MerkleClaimer`: baseline `250228`, best kept `236051`, beat baseline
-
-This means the repo now has broad success across the current initial gas-pack contract patterns relative to the repository baseline policy.
-
-What it still does not prove:
-
-- superiority over stronger manual comparators beyond the current fixed pack
-- a generally reliable autonomous blockchain optimizer outside the current fixed pack
-
-Current decision:
-
-- broader success across the current initial gas-pack contract patterns is justified
-- stronger-comparator success is also justified for the current fixed gas-pack
-
-## ZK Verifier Arena
-
-The best ZK fit for this repository is a separate arena, not a mix-in to `gas_pack`.
-
-The implemented ZK arena on the V3 branch is:
+The repo also contains a separate narrow verifier-gas arena:
 
 - `zk_verifier_pack`
 
-Recommended shape:
+Current shape:
 
-- one proof system only at first
-- one verifier contract or verifier helper target at a time
-- fixed valid-proof and invalid-proof fixtures
-- primary metric: verifier `median_gas`
-- correctness gate: valid proofs accept and invalid proofs reject
-
-Current implemented shape:
-
-- verifier gas, not proving time or constraint count
 - one BN254 verifier family
-- one full verifier contract target
-- frozen Solidity-hosted fixtures
-- one `verifyProof(...)` entrypoint
-- two fixed valid benchmark cases
-- dedicated ZK runners and result log
+- one verifier target
+- fixed valid and invalid fixtures
+- gas measurement for `verifyProof(...)`
 
-That keeps the work aligned with the repo's current autoresearch model instead of widening into broad ZK protocol work too early.
-
-Current ZK result:
+Current evidence:
 
 - baseline verifier `median_gas`: `223677`
 - best kept verifier `median_gas`: `150360`
-- frozen stronger comparator `median_gas`: `33199`
+- stronger comparator `median_gas`: `33199`
 
-So the honest claim boundary is:
+The honest claim boundary is:
 
-- the repo has a real kept verifier-gas win over its ZK baseline
-- the current kept verifier does not beat the frozen stronger manual comparator
+- the verifier arena is real
+- it has one real post-baseline kept win
+- the current kept verifier does not beat the stronger comparator
 
-That means the ZK arena is real and executable, but it does not yet justify a stronger-comparator success claim.
+### V1 Reference Arena
 
-## Stronger Comparator Gap
+The original implemented arena remains in the repo as baseline history:
 
-The next bar is not just "beat the repo's first validated draft."
+- target: `contracts/GasCandidate.sol`
+- tests: `test/GasCandidate.t.sol`
+- benchmark: `test/GasBenchmark.t.sol`
+- runner: `scripts/run_gas_experiment.py`
 
-For each contract, the repo now treats the stronger comparison target as a plausible careful human gas-aware implementation:
+Best recorded V1 result:
 
-- `TokenLedger`: human-specialized common mint and transfer paths
-- `RewardDistributor`: human-specialized zero-accrual setup and claim-path accounting
-- `MerkleClaimer`: human-specialized proof traversal and claim-state handling
+- commit `e3160d8`
+- `median_gas = 1502102`
 
-The repo now has direct benchmark evidence against frozen stronger manual comparators:
+## Fork Lineage
 
-- `TokenLedger`: current kept `813699`, stronger comparator `831827`, current kept wins
-- `RewardDistributor`: current kept `862368`, stronger comparator `894867`, current kept wins
-- `MerkleClaimer`: current kept `236051`, stronger comparator `236456`, current kept wins
+This repository started from an Apple Silicon friendly MLX fork of autoresearch.
 
-So the current wins should still be read as:
-
-- beat the repository baseline
-
-- and:
-
-- beat the frozen stronger manual comparators for the current fixed gas-pack
-
-not yet:
-
-- beat stronger human gas-aware implementations beyond the current fixed gas-pack
+That lineage still explains parts of the repository name and some legacy files, but the active project is now blockchain-first rather than ML-training-first.
 
 ## Legacy Files
 
@@ -216,7 +216,7 @@ The repository still contains MLX-era files such as:
 - `train.py`
 - `results.tsv`
 
-Those files remain part of repository history, but they are not the active blockchain benchmark contract.
+Those files remain part of repository history, not the active blockchain benchmark path.
 
 ## License
 
